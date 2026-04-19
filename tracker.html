@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solar Sync AI | Premium Energy Optimization</title>
+  <!-- Tailwind CSS + Google Fonts + Font Awesome + Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #f9fafb; }
+    /* smooth animations */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeSlideUp 0.4s ease-out forwards; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(2px);
+      border-radius: 1.75rem;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.02);
+      transition: all 0.25s ease;
+    }
+    .glass-card:hover { transform: translateY(-2px); box-shadow: 0 24px 42px -16px rgba(0, 0, 0, 0.12); }
+    .hero-gradient {
+      background: linear-gradient(135deg, #FFF9F0 0%, #FEF3E2 100%);
+    }
+    .badge-surplus { background: #e0f2e9; color: #0b5e42; }
+    .badge-grid { background: #ffe6e5; color: #b91c1c; }
+    .progress-bar-bg { background: #e9ecef; border-radius: 40px; overflow: hidden; }
+    .progress-fill { background: linear-gradient(90deg, #facc15, #f59e0b); border-radius: 40px; width: 0%; transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+    .insight-pulse { border-left: 4px solid #facc15; background: #FFFBEB; }
+    .toggle-btn { transition: all 0.2s; cursor: pointer; }
+    .toggle-btn.active-toggle { background: white; color: #f59e0b; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-weight: 600; }
+    .chart-container canvas { max-height: 260px; width: 100%; }
+    .stat-number { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div class="max-w-7xl mx-auto px-5 py-6 md:py-8 space-y-8">
+    
+    <!-- 🔥 HERO SECTION (Premium Banner) -->
+    <div class="hero-gradient rounded-3xl p-6 md:p-8 shadow-sm border border-white/60 animate-fade-up">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="flex items-center gap-4">
+          <div class="bg-white/60 backdrop-blur-sm p-3 rounded-2xl shadow-sm">
+            <i class="fas fa-solar-panel text-3xl text-amber-500"></i>
+          </div>
+          <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-amber-700">Solar Sync AI</h1>
+            <p class="text-gray-500 text-sm mt-1">Optimize Your Energy. Save More. Live Smart.</p>
+          </div>
+        </div>
+        <!-- Toggle Feature [Today | Weekly] (fake but advanced) -->
+        <div class="flex bg-white/50 backdrop-blur-sm p-1 rounded-full shadow-sm">
+          <div data-period="today" class="toggle-btn active-toggle px-5 py-2 text-sm font-medium rounded-full transition">Today</div>
+          <div data-period="weekly" class="toggle-btn px-5 py-2 text-sm font-medium rounded-full transition text-gray-500">Weekly (Demo)</div>
+        </div>
+      </div>
+      <!-- Mini summary line -->
+      <div class="mt-5 flex flex-wrap gap-4 text-xs text-gray-500 border-t border-white/40 pt-4">
+        <span><i class="fas fa-charging-station text-amber-400"></i> Real-time solar optimization</span>
+        <span><i class="fas fa-leaf text-emerald-500"></i> 100% renewable insights</span>
+        <span><i class="fas fa-microchip"></i> AI-driven scheduling</span>
+      </div>
+    </div>
+
+    <!-- 📊 Status + Progress Bar + Live Insight Row (Smart Visual Indicators) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-up" style="animation-delay: 0.05s">
+      <!-- Status Badge Card -->
+      <div class="glass-card p-5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="statusIconCircle" class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center">
+            <i class="fas fa-sun text-amber-500 text-2xl"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 uppercase font-semibold">Current Status</p>
+            <p id="globalStatusText" class="text-xl font-bold text-gray-800">Solar Surplus Active</p>
+          </div>
+        </div>
+        <div id="statusBadge" class="badge-surplus px-3 py-1.5 rounded-full text-xs font-bold"><i class="fas fa-leaf mr-1"></i> Surplus</div>
+      </div>
+      <!-- Progress Bar: Solar Utilization -->
+      <div class="glass-card p-5">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-600"><i class="fas fa-chart-simple text-amber-400"></i> Solar Self-Consumption</span>
+          <span id="utilPercent" class="text-sm font-bold text-gray-800">0%</span>
+        </div>
+        <div class="progress-bar-bg h-3 w-full">
+          <div id="utilProgressFill" class="progress-fill h-3" style="width: 0%"></div>
+        </div>
+        <p class="text-[11px] text-gray-400 mt-2">of your usage covered by solar</p>
+      </div>
+      <!-- Live Insight Box (Dynamic) -->
+      <div class="glass-card p-5 insight-pulse">
+        <div class="flex gap-3 items-start">
+          <i class="fas fa-lightbulb text-amber-400 text-xl mt-0.5"></i>
+          <div>
+            <p class="text-xs uppercase font-bold text-amber-600">Live Insight</p>
+            <p id="liveInsightText" class="text-sm text-gray-700 leading-relaxed">You are currently using 65% solar energy. Shift evening usage to afternoon to save more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🎯 MAIN CHARTS SECTION: Split into 2 clean visuals (Solar vs Usage + Difference Chart) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-up" style="animation-delay: 0.1s">
+      <!-- Main Chart: Solar vs Usage (area with gradient smooth lines) -->
+      <div class="glass-card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-gray-700 text-sm"><i class="fas fa-chart-line text-amber-500"></i> Solar vs. Grid Consumption</h3>
+          <span class="text-[10px] text-gray-400">smooth curves</span>
+        </div>
+        <div class="h-56 w-full">
+          <canvas id="mainCompareChart"></canvas>
+        </div>
+      </div>
+      <!-- Difference Chart: Surplus (+) / Deficit (-) CLEAN -->
+      <div class="glass-card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-gray-700 text-sm"><i class="fas fa-arrow-trend-up text-emerald-500"></i> Surplus / Deficit Analysis</h3>
+          <div class="flex gap-2 text-[10px]"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Surplus</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span> Deficit</span></div>
+        </div>
+        <div class="h-56 w-full">
+          <canvas id="diffChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📊 Mini Charts Row (Hourly peak indicator + Pie Chart) Micro UI upgrade -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-up" style="animation-delay: 0.15s">
+      <!-- Bar chart for savings / hourly savings impact -->
+      <div class="glass-card p-5">
+        <h3 class="font-semibold text-gray-700 text-sm mb-2"><i class="fas fa-chart-simple text-emerald-500"></i> Hourly Savings Impact (₹)</h3>
+        <div class="h-44 w-full">
+          <canvas id="hourlySavingsBar"></canvas>
+        </div>
+      </div>
+      <!-- Pie chart: Solar vs Grid usage distribution -->
+      <div class="glass-card p-5">
+        <h3 class="font-semibold text-gray-700 text-sm mb-2"><i class="fas fa-chart-pie text-blue-400"></i> Energy Mix: Solar vs Grid</h3>
+        <div class="h-44 w-full flex items-center justify-center">
+          <canvas id="mixPieChart" style="max-height: 150px; width: 100%;"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🧠 RECOMMENDATION SECTION (Sexy Card Style) + Animated Savings Counter + Appliance Cards -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-up" style="animation-delay: 0.2s">
+      <!-- Left Big: Appliance Smart Recommendations (Card Style) -->
+      <div class="lg:col-span-2 glass-card p-5">
+        <div class="flex items-center gap-2 mb-4"><i class="fas fa-microchip text-amber-500 text-xl"></i><h3 class="font-bold text-gray-800">⚡ Smart Appliance Schedule</h3></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="smartApplianceGrid">
+          <!-- Dynamic appliance cards injected -->
+        </div>
+        <p class="text-xs text-gray-400 mt-4"><i class="fas fa-clock"></i> Optimal window: 12 PM – 3 PM (peak solar surplus)</p>
+      </div>
+
+      <!-- Right Column: Savings Counter + Impact -->
+      <div class="glass-card p-5 flex flex-col items-center text-center">
+        <div class="bg-gradient-to-br from-amber-50 to-yellow-50 w-20 h-20 rounded-3xl flex items-center justify-center shadow-sm"><i class="fas fa-coins text-4xl text-amber-500"></i></div>
+        <p class="text-gray-500 text-sm mt-3">💰 Estimated Savings Today</p>
+        <div class="text-5xl font-black text-gray-800 mt-1 stat-number" id="animatedSavings">₹0</div>
+        <div class="mt-2 text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">+ smart shift bonus</div>
+        <div class="w-full mt-4 pt-3 border-t border-gray-100">
+          <div class="flex justify-between text-xs"><span>Monthly forecast</span><span id="monthlyPreview" class="font-bold text-gray-700">₹0</span></div>
+          <div class="flex justify-between text-xs mt-1"><span>Grid reduction</span><span id="gridReductionMetric" class="font-bold text-emerald-600">0%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 Extra Smart Plan line: minimal but powerful -->
+    <div class="glass-card p-5 flex flex-wrap justify-between items-center gap-3 animate-fade-up" style="animation-delay: 0.25s">
+      <div class="flex items-center gap-3"><i class="fas fa-list-check text-indigo-500 text-xl"></i><span class="font-medium text-gray-700">Today’s Smart Plan:</span><span id="quickPlanText" class="text-sm text-gray-500">1PM Washing Machine · 2PM Ironing · EV Charging 12-3PM</span></div>
+      <div class="text-xs bg-gray-100 px-3 py-1.5 rounded-full"><i class="fas fa-charging-station"></i> Avoid heavy loads after 6PM</div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- SAMPLE HOURLY DATA (static) ----------
+    const hourlyData = [
+      { hour: "10 AM", solar: 3.2, usage: 4.1 },
+      { hour: "11 AM", solar: 6.3, usage: 5.2 },
+      { hour: "12 PM", solar: 10.1, usage: 6.0 },
+      { hour: "1 PM", solar: 12.4, usage: 5.1 },
+      { hour: "2 PM", solar: 11.2, usage: 4.3 },
+      { hour: "3 PM", solar: 8.5, usage: 5.2 }
+    ];
+    const COST_PER_UNIT = 8; // ₹/kWh
+    const PEAK_START = 12, PEAK_END = 15;
+
+    // Helper: compute avoided grid energy (savings based on min(solar, usage))
+    function computeDailySavings() {
+      let avoided = 0;
+      for (let d of hourlyData) avoided += Math.min(d.solar, d.usage);
+      return avoided * COST_PER_UNIT;
+    }
+
+    // Solar utilization percentage (self-consumption / total usage)
+    function getUtilizationPercentage() {
+      let totalUsage = hourlyData.reduce((s, h) => s + h.usage, 0);
+      let solarUsed = hourlyData.reduce((s, h) => s + Math.min(h.solar, h.usage), 0);
+      return totalUsage > 0 ? (solarUsed / totalUsage) * 100 : 0;
+    }
+
+    // Grid reduction % = solar self consumption / total usage
+    function getGridReductionPercent() { return getUtilizationPercentage(); }
+
+    // Determine status based on most recent hour (3 PM)
+    function getCurrentStatus() {
+      const last = hourlyData[hourlyData.length-1];
+      const diff = last.solar - last.usage;
+      if (diff > 0.2) return { text: "Solar Surplus Active", badge: "Surplus", badgeClass: "badge-surplus", icon: "fa-sun", iconColor: "text-amber-500", bgCircle: "bg-amber-100", insight: "Excellent! You're exporting clean energy. Run appliances now." };
+      if (diff < -0.2) return { text: "Grid Dependency", badge: "Using Grid", badgeClass: "badge-grid", icon: "fa-plug", iconColor: "text-red-500", bgCircle: "bg-red-100", insight: "Grid usage high. Shift flexible loads to peak solar hours (12-3PM)." };
+      return { text: "Balanced", badge: "Balanced", badgeClass: "bg-gray-100 text-gray-700", icon: "fa-balance-scale", iconColor: "text-gray-500", bgCircle: "bg-gray-100", insight: "Solar matches demand, try to maintain this balance." };
+    }
+
+    // Live insight dynamic
+    function updateLiveInsight() {
+      const status = getCurrentStatus();
+      const util = getUtilizationPercentage();
+      let insightMsg = status.insight;
+      if (util > 70) insightMsg = `🔥 Amazing! ${util.toFixed(0)}% solar self-consumption. You're maximizing green energy.`;
+      else if (util > 50) insightMsg = `✅ ${util.toFixed(0)}% solar coverage. Shifting laundry to 1PM can boost savings.`;
+      else insightMsg = `📊 ${util.toFixed(0)}% solar usage. Run heavy appliances between 12 PM – 3 PM to reduce grid draw.`;
+      document.getElementById('liveInsightText').innerText = insightMsg;
+    }
+
+   let appliances = [];
+
+   async function loadDevices() {
+  try {
+    const response = await fetch('devices.json');
+    appliances = await response.json();
+
+    renderApplianceCards(); // re-render after loading
+  } catch (error) {
+    console.error("Error loading devices:", error);
+  }
+}
+
+    function renderApplianceCards() {
+      const container = document.getElementById('smartApplianceGrid');
+      container.innerHTML = appliances.map(app => `
+        <div class="bg-gray-50/80 rounded-xl p-3 flex items-center justify-between transition-all hover:shadow-sm">
+          <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-${app.color}-100 flex items-center justify-center"><i class="fas ${app.icon} text-${app.color}-600"></i></div><div><p class="font-semibold text-gray-800 text-sm">${app.name}</p><p class="text-[10px] text-gray-400">⏰ ${app.timeSlot}</p></div></div>
+          <div class="text-right"><span class="text-xs font-bold text-amber-600">⚡ ${app.solarCoverage}% solar</span><p class="text-[11px] text-emerald-600">💰 ${app.saves}</p></div>
+        </div>
+      `).join('');
+    }
+
+    // Animated counter
+    let animatedValue = 0;
+    function animateSavings(target) {
+      const elem = document.getElementById('animatedSavings');
+      let start = animatedValue;
+      const duration = 800;
+      const stepTime = 16;
+      const steps = duration / stepTime;
+      let step = 0;
+      const increment = (target - start) / steps;
+      const interval = setInterval(() => {
+        step++;
+        let current = start + increment * step;
+        if (step >= steps) { current = target; clearInterval(interval); }
+        animatedValue = current;
+        elem.innerText = `₹${Math.floor(current)}`;
+      }, stepTime);
+    }
+
+    // ---- CHARTS INIT (gradient smooth lines, diff chart, bar, pie) ----
+    let mainChart, diffChart, barChart, pieChart;
+    function initAllCharts() {
+      const labels = hourlyData.map(d => d.hour);
+      const solarVals = hourlyData.map(d => d.solar);
+      const usageVals = hourlyData.map(d => d.usage);
+      const surplusVals = hourlyData.map(d => Math.max(0, d.solar - d.usage));
+      const deficitVals = hourlyData.map(d => Math.max(0, d.usage - d.solar));
+
+      // MAIN CHART (solar vs usage) area fill + smooth tension
+      const mainCtx = document.getElementById('mainCompareChart').getContext('2d');
+      if (mainChart) mainChart.destroy();
+      mainChart = new Chart(mainCtx, {
+        type: 'line',
+        data: { labels, datasets: [
+          { label: 'Solar Generation', data: solarVals, borderColor: '#facc15', backgroundColor: 'rgba(250,204,21,0.08)', borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#facc15', pointBorderColor: '#fff' },
+          { label: 'Grid Consumption', data: usageVals, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.05)', borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#3b82f6' }
+        ]},
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { mode: 'index' } }, scales: { y: { beginAtZero: true, grid: { color: '#eef2f6' }, title: { display: false } } } }
+      });
+
+      // DIFFERENCE CHART (Surplus vs Deficit)
+      const diffCtx = document.getElementById('diffChart').getContext('2d');
+      if (diffChart) diffChart.destroy();
+      diffChart = new Chart(diffCtx, {
+        type: 'bar',
+        data: { labels, datasets: [
+          { label: 'Surplus (+)', data: surplusVals, backgroundColor: '#10b981', borderRadius: 8, barPercentage: 0.6, categoryPercentage: 0.8 },
+          { label: 'Deficit (-)', data: deficitVals.map(v => -v), backgroundColor: '#f43f5e', borderRadius: 8, barPercentage: 0.6 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: 'kWh' }, ticks: { callback: (val) => Math.abs(val) } } } }
+      });
+
+      // Hourly Savings Bar Chart
+      const hourlySavingsData = hourlyData.map(h => Math.min(h.solar, h.usage) * COST_PER_UNIT);
+      const barCtx = document.getElementById('hourlySavingsBar').getContext('2d');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(barCtx, {
+        type: 'bar', data: { labels, datasets: [{ label: 'Savings (₹)', data: hourlySavingsData, backgroundColor: '#a7f3d0', borderRadius: 6, borderColor: '#10b981', borderWidth: 1 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: '₹ saved' } } } }
+      });
+
+      // Pie Chart: Total Solar Used vs Grid Imported
+      const totalSolarGen = hourlyData.reduce((s, h) => s + h.solar, 0);
+      const totalUsage = hourlyData.reduce((s, h) => s + h.usage, 0);
+      const solarSelfUsed = hourlyData.reduce((s, h) => s + Math.min(h.solar, h.usage), 0);
+      const gridImported = totalUsage - solarSelfUsed;
+      const pieCtx = document.getElementById('mixPieChart').getContext('2d');
+      if (pieChart) pieChart.destroy();
+      pieChart = new Chart(pieCtx, {
+        type: 'pie', data: { labels: ['Solar Self-Consumption', 'Grid Import'], datasets: [{ data: [solarSelfUsed, Math.max(0, gridImported)], backgroundColor: ['#facc15', '#94a3b8'], borderWidth: 0 }] },
+        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
+      });
+    }
+
+    function refreshDashboardUI() {
+      const savings = computeDailySavings();
+      const utilPercent = getUtilizationPercentage();
+      const status = getCurrentStatus();
+      const monthly = savings * 30;
+      const gridReduction = getGridReductionPercent();
+
+      // Update status card, badge, progress bar
+      document.getElementById('globalStatusText').innerText = status.text;
+      const badgeSpan = document.getElementById('statusBadge');
+      badgeSpan.innerHTML = `<i class="fas ${status.badge === 'Surplus' ? 'fa-leaf' : 'fa-plug'} mr-1"></i> ${status.badge}`;
+      badgeSpan.className = `px-3 py-1.5 rounded-full text-xs font-bold ${status.badgeClass}`;
+      document.getElementById('statusIconCircle').innerHTML = `<i class="fas ${status.icon} ${status.iconColor} text-2xl"></i>`;
+      document.getElementById('utilPercent').innerText = `${utilPercent.toFixed(0)}%`;
+      document.getElementById('utilProgressFill').style.width = `${utilPercent}%`;
+      document.getElementById('monthlyPreview').innerText = `₹${monthly.toFixed(0)}`;
+      document.getElementById('gridReductionMetric').innerText = `${gridReduction.toFixed(0)}%`;
+      
+      // quick plan text
+      document.getElementById('quickPlanText').innerHTML = `🌞 1PM Washing · 2PM Ironing · EV 12-2PM · Save ₹${Math.floor(savings)}/day`;
+
+      // animate savings
+      animateSavings(Math.floor(savings));
+      updateLiveInsight();
+    }
+
+    // Toggle demo (just visual for weekly - keep same data)
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-toggle'));
+        this.classList.add('active-toggle');
+        if (this.getAttribute('data-period') === 'weekly') {
+          // slight effect: change insight text to simulate weekly
+          document.getElementById('liveInsightText').innerText = "📅 Weekly trend: Peak surplus between 12-3PM all week. Maximize savings by scheduling heavy loads.";
+        } else {
+          updateLiveInsight();
+        }
+      });
+    });
+
+    // initial load
+    function init() {
+  loadDevices(); // fetch JSON first
+  initAllCharts();
+  refreshDashboardUI();
+}
+    init();
+    window.addEventListener('resize', () => {
+      if (mainChart) mainChart.resize();
+      if (diffChart) diffChart.resize();
+      if (barChart) barChart.resize();
+      if (pieChart) pieChart.resize();
+    });
+  </script>
+</body>
+</html>
