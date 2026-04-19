@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚡ Device Energy Profiler</title>
+  
+
+  <!-- Tailwind CSS -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen p-6">
+
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+
+
+<!-- Title -->
+<h1 class="text-3xl font-bold text-center mb-6">
+  ⚡ Device Energy Profiler
+</h1>
+
+<!-- Input Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+
+  <!-- Device Dropdown -->
+  <select id="deviceSelect" class="p-3 border rounded-lg">
+    <option value="">Select Device</option>
+  </select>
+
+  <!-- Hours Input -->
+  <input id="hours" type="number" placeholder="Hours Used"
+    class="p-3 border rounded-lg">
+
+  <!-- Time Input -->
+  <input id="time" type="time"
+    class="p-3 border rounded-lg">
+
+  <!-- Add Button -->
+  <button onclick="addDevice()"
+    class="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-lg">
+    Add Device
+  </button>
+
+</div>
+
+<!-- Table Section -->
+<div class="overflow-x-auto mb-6">
+  <table class="w-full border border-gray-200 text-left">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="p-3">Device</th>
+        <th class="p-3">Hours</th>
+        <th class="p-3">Energy (kWh)</th>
+        <th class="p-3">Time</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<!-- Summary -->
+<div id="summary" class="text-lg font-semibold mb-4">
+  Total Consumption: 0 kWh
+</div>
+<div class="grid grid-cols-3 gap-4 mb-6 text-center">
+
+  <div class="bg-blue-100 p-4 rounded">
+    <p class="text-sm">Total Energy</p>
+    <p id="monthlyEnergy" class="text-sm text-gray-600">Monthly: 0 kWh</p>
+    <h2 id="totalEnergy" class="text-xl font-bold">0 kWh</h2>
+  </div>
+
+  <div class="bg-green-100 p-4 rounded">
+    <p class="text-sm">Efficiency</p>
+    <h2 id="efficiency" class="text-xl font-bold">0%</h2>
+  </div>
+
+  <div class="bg-red-100 p-4 rounded">
+    <p class="text-sm">Peak Hour</p>
+    <h2 id="peakHour" class="text-xl font-bold">--</h2>
+  </div>
+
+</div>
+<!-- Chart -->
+<div class="grid md:grid-cols-2 gap-6 mb-6">
+
+  <!-- Bar Chart -->
+  <div>
+    <h2 class="text-lg font-semibold mb-2">Device Energy Usage</h2>
+    <canvas id="barChart"></canvas>
+  </div>
+
+  <!-- Pie Chart -->
+  <div>
+    <h2 class="text-lg font-semibold mb-2">% Consumption</h2>
+    <canvas id="pieChart"></canvas>
+  </div>
+
+</div>
+<div class="card bg-white p-4 rounded-xl shadow mb-6">
+  <h2 class="text-lg font-semibold mb-2">📅 Monthly Energy Usage</h2>
+  <canvas id="monthlyChart"></canvas>
+</div>
+<div class="card bg-white p-4 rounded-xl shadow mb-6">
+  <h2 class="text-lg font-semibold mb-2">🔮 7-Day Energy Prediction</h2>
+
+  <canvas id="predictionChart"></canvas>
+
+  <!-- 👇 ADD HERE -->
+  <p class="text-xs text-gray-500 mt-2">
+    *Prediction based on recent usage trends
+  </p>
+</div>
+
+<!-- Insights -->
+<div id="insights" class="p-4 bg-green-100 text-green-700 rounded-lg font-medium">
+  Insights will appear here...
+</div>
+<div class="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg">
+  <h2 class="font-bold mb-2"> Smart Recommendations</h2>
+  <div id="recommendations">Recommendations will appear here...</div>
+</div>
+<!-- What-if Simulation -->
+<div class="mt-6 p-4 bg-blue-50 rounded-lg">
+
+  <h2 class="font-bold mb-2">🔮 What-if Simulation</h2>
+
+  <button onclick="runSimulation()"
+    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mb-3">
+    Optimize My Usage
+  </button>
+
+  <div id="simulationResult"
+    class="p-3 bg-blue-100 text-blue-800 rounded">
+    Simulation result will appear here...
+  </div>
+
+</div>
+
+
+  </div>
+
+  <!-- JavaScript Files -->
+
+  <script src="js/data.js"></script>
+
+  <script src="js/app.js"></script>
+
+  <script src="js/charts.js"></script>
+
+</body>
+</html>  
