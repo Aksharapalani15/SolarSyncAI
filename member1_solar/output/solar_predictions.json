@@ -1,0 +1,272 @@
+[
+  {
+    "date": "2024-01-01",
+    "predicted_solar": 3.77,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-02",
+    "predicted_solar": 3.78,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-03",
+    "predicted_solar": 3.95,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-04",
+    "predicted_solar": 3.96,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-05",
+    "predicted_solar": 4.02,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-06",
+    "predicted_solar": 3.97,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-07",
+    "predicted_solar": 3.76,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-08",
+    "predicted_solar": 3.72,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-09",
+    "predicted_solar": 3.72,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-10",
+    "predicted_solar": 3.9,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-11",
+    "predicted_solar": 3.91,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-12",
+    "predicted_solar": 3.97,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-13",
+    "predicted_solar": 3.92,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-14",
+    "predicted_solar": 3.71,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-15",
+    "predicted_solar": 3.67,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-16",
+    "predicted_solar": 3.67,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-17",
+    "predicted_solar": 3.85,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-18",
+    "predicted_solar": 3.86,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-19",
+    "predicted_solar": 3.92,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-20",
+    "predicted_solar": 3.87,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-21",
+    "predicted_solar": 3.66,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-22",
+    "predicted_solar": 3.62,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-23",
+    "predicted_solar": 3.62,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-24",
+    "predicted_solar": 3.8,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-25",
+    "predicted_solar": 3.81,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-26",
+    "predicted_solar": 3.86,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-27",
+    "predicted_solar": 3.81,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-28",
+    "predicted_solar": 3.6,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-29",
+    "predicted_solar": 3.57,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  },
+  {
+    "date": "2024-01-30",
+    "predicted_solar": 3.57,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ]
+  }
+]
