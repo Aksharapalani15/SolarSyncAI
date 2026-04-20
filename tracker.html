@@ -1,386 +1,168 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Solar Sync AI | Premium Energy Optimization</title>
-  <!-- Tailwind CSS + Google Fonts + Font Awesome + Chart.js -->
+  <title>Solar Sync AI — Intelligent Energy Optimizer</title>
+  <!-- Tailwind + Fonts + Chart.js -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Inter', sans-serif; }
-    body { background: #f9fafb; }
-    /* smooth animations */
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up { animation: fadeSlideUp 0.4s ease-out forwards; }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(2px);
-      border-radius: 1.75rem;
-      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.02);
-      transition: all 0.25s ease;
-    }
-    .glass-card:hover { transform: translateY(-2px); box-shadow: 0 24px 42px -16px rgba(0, 0, 0, 0.12); }
-    .hero-gradient {
-      background: linear-gradient(135deg, #FFF9F0 0%, #FEF3E2 100%);
-    }
-    .badge-surplus { background: #e0f2e9; color: #0b5e42; }
-    .badge-grid { background: #ffe6e5; color: #b91c1c; }
-    .progress-bar-bg { background: #e9ecef; border-radius: 40px; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, #facc15, #f59e0b); border-radius: 40px; width: 0%; transition: width 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
-    .insight-pulse { border-left: 4px solid #facc15; background: #FFFBEB; }
-    .toggle-btn { transition: all 0.2s; cursor: pointer; }
-    .toggle-btn.active-toggle { background: white; color: #f59e0b; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-weight: 600; }
-    .chart-container canvas { max-height: 260px; width: 100%; }
-    .stat-number { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+    body { background: #f9fafb; overflow-x: hidden; }
+    .glass-card { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.5); }
+    .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -12px rgba(0,0,0,0.1); transition: all 0.25s ease-out; }
+    .gradient-btn { background: linear-gradient(135deg, #facc15, #f59e0b); transition: all 0.2s; }
+    .gradient-btn:hover { box-shadow: 0 8px 20px rgba(245,158,11,0.4); transform: scale(0.98); }
+    .active-nav { background: rgba(245,158,11,0.15); border-left: 3px solid #f59e0b; font-weight: 600; }
+    .counter-value { transition: all 0.3s ease; }
+    .chart-container canvas { max-height: 280px; width: 100%; }
+    .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 10px; }
+    .modal-transition { transition: opacity 0.2s ease, visibility 0.2s, transform 0.2s; }
   </style>
 </head>
 <body class="antialiased">
 
-  <div class="max-w-7xl mx-auto px-5 py-6 md:py-8 space-y-8">
-    
-    <!-- 🔥 HERO SECTION (Premium Banner) -->
-    <div class="hero-gradient rounded-3xl p-6 md:p-8 shadow-sm border border-white/60 animate-fade-up">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div class="flex items-center gap-4">
-          <div class="bg-white/60 backdrop-blur-sm p-3 rounded-2xl shadow-sm">
-            <i class="fas fa-solar-panel text-3xl text-amber-500"></i>
-          </div>
-          <div>
-            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-amber-700">Solar Sync AI</h1>
-            <p class="text-gray-500 text-sm mt-1">Optimize Your Energy. Save More. Live Smart.</p>
-          </div>
+  <!-- NAVBAR (Sticky) -->
+  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/60 shadow-sm">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md"><span class="text-white text-lg font-bold">☀️</span></div>
+          <span class="font-bold text-xl tracking-tight bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent">Solar Sync AI</span>
         </div>
-        <!-- Toggle Feature [Today | Weekly] (fake but advanced) -->
-        <div class="flex bg-white/50 backdrop-blur-sm p-1 rounded-full shadow-sm">
-          <div data-period="today" class="toggle-btn active-toggle px-5 py-2 text-sm font-medium rounded-full transition">Today</div>
-          <div data-period="weekly" class="toggle-btn px-5 py-2 text-sm font-medium rounded-full transition text-gray-500">Weekly (Demo)</div>
+        <div class="hidden md:flex space-x-1" id="nav-links">
+          <a href="/" data-page="dashboard" class="nav-item px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">🏠 Dashboard</a>
+          <a href="/analytics" data-page="analytics" class="nav-item px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">📈 Analytics</a>
+          <a href="/devices" data-page="devices" class="nav-item px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">🔌 Devices</a>
+          <a href="/cost" data-page="cost" class="nav-item px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">💰 Cost</a>
+          <a href="/optimize" data-page="optimize" class="nav-item px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50 transition">⚡ Smart Optimize</a>
         </div>
-      </div>
-      <!-- Mini summary line -->
-      <div class="mt-5 flex flex-wrap gap-4 text-xs text-gray-500 border-t border-white/40 pt-4">
-        <span><i class="fas fa-charging-station text-amber-400"></i> Real-time solar optimization</span>
-        <span><i class="fas fa-leaf text-emerald-500"></i> 100% renewable insights</span>
-        <span><i class="fas fa-microchip"></i> AI-driven scheduling</span>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-semibold">AI</div></div>
       </div>
     </div>
+  </nav>
 
-    <!-- 📊 Status + Progress Bar + Live Insight Row (Smart Visual Indicators) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-up" style="animation-delay: 0.05s">
-      <!-- Status Badge Card -->
-      <div class="glass-card p-5 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div id="statusIconCircle" class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center">
-            <i class="fas fa-sun text-amber-500 text-2xl"></i>
-          </div>
-          <div>
-            <p class="text-xs text-gray-400 uppercase font-semibold">Current Status</p>
-            <p id="globalStatusText" class="text-xl font-bold text-gray-800">Solar Surplus Active</p>
-          </div>
-        </div>
-        <div id="statusBadge" class="badge-surplus px-3 py-1.5 rounded-full text-xs font-bold"><i class="fas fa-leaf mr-1"></i> Surplus</div>
-      </div>
-      <!-- Progress Bar: Solar Utilization -->
-      <div class="glass-card p-5">
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-sm font-medium text-gray-600"><i class="fas fa-chart-simple text-amber-400"></i> Solar Self-Consumption</span>
-          <span id="utilPercent" class="text-sm font-bold text-gray-800">0%</span>
-        </div>
-        <div class="progress-bar-bg h-3 w-full">
-          <div id="utilProgressFill" class="progress-fill h-3" style="width: 0%"></div>
-        </div>
-        <p class="text-[11px] text-gray-400 mt-2">of your usage covered by solar</p>
-      </div>
-      <!-- Live Insight Box (Dynamic) -->
-      <div class="glass-card p-5 insight-pulse">
-        <div class="flex gap-3 items-start">
-          <i class="fas fa-lightbulb text-amber-400 text-xl mt-0.5"></i>
-          <div>
-            <p class="text-xs uppercase font-bold text-amber-600">Live Insight</p>
-            <p id="liveInsightText" class="text-sm text-gray-700 leading-relaxed">You are currently using 65% solar energy. Shift evening usage to afternoon to save more.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- DYNAMIC PAGE CONTAINER -->
+  <main id="app-root" class="max-w-7xl mx-auto px-5 lg:px-8 py-8 transition-all duration-300"></main>
 
-    <!-- 🎯 MAIN CHARTS SECTION: Split into 2 clean visuals (Solar vs Usage + Difference Chart) -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-fade-up" style="animation-delay: 0.1s">
-      <!-- Main Chart: Solar vs Usage (area with gradient smooth lines) -->
-      <div class="glass-card p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-gray-700 text-sm"><i class="fas fa-chart-line text-amber-500"></i> Solar vs. Grid Consumption</h3>
-          <span class="text-[10px] text-gray-400">smooth curves</span>
-        </div>
-        <div class="h-56 w-full">
-          <canvas id="mainCompareChart"></canvas>
-        </div>
-      </div>
-      <!-- Difference Chart: Surplus (+) / Deficit (-) CLEAN -->
-      <div class="glass-card p-5">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="font-semibold text-gray-700 text-sm"><i class="fas fa-arrow-trend-up text-emerald-500"></i> Surplus / Deficit Analysis</h3>
-          <div class="flex gap-2 text-[10px]"><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Surplus</span><span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400"></span> Deficit</span></div>
-        </div>
-        <div class="h-56 w-full">
-          <canvas id="diffChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📊 Mini Charts Row (Hourly peak indicator + Pie Chart) Micro UI upgrade -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-up" style="animation-delay: 0.15s">
-      <!-- Bar chart for savings / hourly savings impact -->
-      <div class="glass-card p-5">
-        <h3 class="font-semibold text-gray-700 text-sm mb-2"><i class="fas fa-chart-simple text-emerald-500"></i> Hourly Savings Impact (₹)</h3>
-        <div class="h-44 w-full">
-          <canvas id="hourlySavingsBar"></canvas>
-        </div>
-      </div>
-      <!-- Pie chart: Solar vs Grid usage distribution -->
-      <div class="glass-card p-5">
-        <h3 class="font-semibold text-gray-700 text-sm mb-2"><i class="fas fa-chart-pie text-blue-400"></i> Energy Mix: Solar vs Grid</h3>
-        <div class="h-44 w-full flex items-center justify-center">
-          <canvas id="mixPieChart" style="max-height: 150px; width: 100%;"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- 🧠 RECOMMENDATION SECTION (Sexy Card Style) + Animated Savings Counter + Appliance Cards -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-up" style="animation-delay: 0.2s">
-      <!-- Left Big: Appliance Smart Recommendations (Card Style) -->
-      <div class="lg:col-span-2 glass-card p-5">
-        <div class="flex items-center gap-2 mb-4"><i class="fas fa-microchip text-amber-500 text-xl"></i><h3 class="font-bold text-gray-800">⚡ Smart Appliance Schedule</h3></div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="smartApplianceGrid">
-          <!-- Dynamic appliance cards injected -->
-        </div>
-        <p class="text-xs text-gray-400 mt-4"><i class="fas fa-clock"></i> Optimal window: 12 PM – 3 PM (peak solar surplus)</p>
-      </div>
-
-      <!-- Right Column: Savings Counter + Impact -->
-      <div class="glass-card p-5 flex flex-col items-center text-center">
-        <div class="bg-gradient-to-br from-amber-50 to-yellow-50 w-20 h-20 rounded-3xl flex items-center justify-center shadow-sm"><i class="fas fa-coins text-4xl text-amber-500"></i></div>
-        <p class="text-gray-500 text-sm mt-3">💰 Estimated Savings Today</p>
-        <div class="text-5xl font-black text-gray-800 mt-1 stat-number" id="animatedSavings">₹0</div>
-        <div class="mt-2 text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">+ smart shift bonus</div>
-        <div class="w-full mt-4 pt-3 border-t border-gray-100">
-          <div class="flex justify-between text-xs"><span>Monthly forecast</span><span id="monthlyPreview" class="font-bold text-gray-700">₹0</span></div>
-          <div class="flex justify-between text-xs mt-1"><span>Grid reduction</span><span id="gridReductionMetric" class="font-bold text-emerald-600">0%</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 📋 Extra Smart Plan line: minimal but powerful -->
-    <div class="glass-card p-5 flex flex-wrap justify-between items-center gap-3 animate-fade-up" style="animation-delay: 0.25s">
-      <div class="flex items-center gap-3"><i class="fas fa-list-check text-indigo-500 text-xl"></i><span class="font-medium text-gray-700">Today’s Smart Plan:</span><span id="quickPlanText" class="text-sm text-gray-500">1PM Washing Machine · 2PM Ironing · EV Charging 12-3PM</span></div>
-      <div class="text-xs bg-gray-100 px-3 py-1.5 rounded-full"><i class="fas fa-charging-station"></i> Avoid heavy loads after 6PM</div>
+  <!-- FLOATING CHATBOT BUTTON + MODAL -->
+  <div id="chatbot-fab" class="fixed bottom-6 right-6 z-50 cursor-pointer group">
+    <div class="bg-gradient-to-r from-amber-500 to-amber-600 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300"><span class="text-2xl">💬</span></div>
+  </div>
+  <div id="chat-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 invisible opacity-0 transition-all duration-200">
+    <div class="glass-card w-[90%] max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all">
+      <div class="bg-amber-500 px-5 py-4 flex justify-between items-center"><span class="font-bold text-white">🤖 Solar AI Assistant</span><button id="close-chat" class="text-white text-2xl leading-5">&times;</button></div>
+      <div id="chat-messages" class="h-80 overflow-y-auto p-4 space-y-3 bg-gray-50"></div>
+      <div class="p-3 border-t flex gap-2 flex-wrap" id="chat-quick-btns"></div>
+      <div class="p-3 border-t flex"><input type="text" id="chat-input" placeholder="Ask me anything..." class="flex-1 border rounded-l-xl px-4 py-2 focus:outline-none focus:ring-1 focus:ring-amber-300"><button id="chat-send" class="bg-amber-500 px-4 rounded-r-xl text-white">Send</button></div>
     </div>
   </div>
 
   <script>
-    // ---------- SAMPLE HOURLY DATA (static) ----------
-    const hourlyData = [
-      { hour: "10 AM", solar: 3.2, usage: 4.1 },
-      { hour: "11 AM", solar: 6.3, usage: 5.2 },
-      { hour: "12 PM", solar: 10.1, usage: 6.0 },
-      { hour: "1 PM", solar: 12.4, usage: 5.1 },
-      { hour: "2 PM", solar: 11.2, usage: 4.3 },
-      { hour: "3 PM", solar: 8.5, usage: 5.2 }
+    // ---------- GLOBAL DATA & STATE ----------
+    const devicesCatalog = [
+      { "name": "Air Conditioner", "power": 1500 },
+      { "name": "Fan", "power": 75 },
+      { "name": "Television", "power": 120 },
+      { "name": "Refrigerator", "power": 200 },
+      { "name": "Washing Machine", "power": 500 },
+      { "name": "Laptop", "power": 65 },
+      { "name": "Lights", "power": 40 }
     ];
-    const COST_PER_UNIT = 8; // ₹/kWh
-    const PEAK_START = 12, PEAK_END = 15;
+    let userDevices = JSON.parse(localStorage.getItem('solar_user_devices')) || [
+      { id: 'd1', name: 'Air Conditioner', power: 1500, hours: 4, activeSlot: '14:00' },
+      { id: 'd2', name: 'Fan', power: 75, hours: 8, activeSlot: '10:00' },
+      { id: 'd3', name: 'Television', power: 120, hours: 3, activeSlot: '20:00' }
+    ];
+    const solarData = [
+      {"date":"2024-01-01","predicted_solar":3.77,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-02","predicted_solar":3.78,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-03","predicted_solar":3.95,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-04","predicted_solar":3.96,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-05","predicted_solar":4.02,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-06","predicted_solar":3.97,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-07","predicted_solar":3.76,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-08","predicted_solar":3.72,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-09","predicted_solar":3.72,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-10","predicted_solar":3.9,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-11","predicted_solar":3.91,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-12","predicted_solar":3.97,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-13","predicted_solar":3.92,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-14","predicted_solar":3.71,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-15","predicted_solar":3.67,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-16","predicted_solar":3.67,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-17","predicted_solar":3.85,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-18","predicted_solar":3.86,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-19","predicted_solar":3.92,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-20","predicted_solar":3.87,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-21","predicted_solar":3.66,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-22","predicted_solar":3.62,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-23","predicted_solar":3.62,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-24","predicted_solar":3.8,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-25","predicted_solar":3.81,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-26","predicted_solar":3.86,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-27","predicted_solar":3.81,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-28","predicted_solar":3.6,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-29","predicted_solar":3.57,"peak_hours":["11AM","12PM","1PM"]},{"date":"2024-01-30","predicted_solar":3.57,"peak_hours":["11AM","12PM","1PM"]}
+    ];
+    let usageHistory = JSON.parse(localStorage.getItem('solar_usage_json')) || { dailyUsage: solarData.map(d => ({ date: d.date, consumption: 18 + Math.random() * 8 })) };
+    let chartsStore = {};
 
-    // Helper: compute avoided grid energy (savings based on min(solar, usage))
-    function computeDailySavings() {
-      let avoided = 0;
-      for (let d of hourlyData) avoided += Math.min(d.solar, d.usage);
-      return avoided * COST_PER_UNIT;
+    function saveToLocal() { localStorage.setItem('solar_user_devices', JSON.stringify(userDevices)); localStorage.setItem('solar_usage_json', JSON.stringify(usageHistory)); }
+    function getTotalConsumption() { return userDevices.reduce((sum, d) => sum + (d.power * d.hours) / 1000, 0); }
+    function getGridReduction() { let total = getTotalConsumption(); let solarGen = solarData.slice(0,7).reduce((a,b)=>a+b.predicted_solar,0)/7; let reduction = Math.min(100, Math.round((solarGen / (total+0.01)) * 70 + 15)); return reduction; }
+    function getEnergyScore() { let reduction = getGridReduction(); return Math.min(100, 40 + Math.floor(reduction * 0.6)); }
+
+    // Routing & rendering
+    let currentRoute = 'dashboard';
+    function navigate(route) { currentRoute = route; renderPage(); updateActiveNav(); }
+    function updateActiveNav() { document.querySelectorAll('.nav-item').forEach(el => { el.classList.remove('active-nav', 'bg-amber-50', 'border-l-0'); if(el.getAttribute('data-page') === currentRoute) el.classList.add('active-nav','bg-amber-50'); }); }
+    async function renderPage() {
+      const root = document.getElementById('app-root'); root.innerHTML = '<div class="flex justify-center py-20"><div class="skeleton w-32 h-32 rounded-full"></div></div>';
+      setTimeout(async () => {
+        if (currentRoute === 'dashboard') root.innerHTML = await renderDashboard();
+        else if (currentRoute === 'analytics') root.innerHTML = await renderAnalytics();
+        else if (currentRoute === 'devices') root.innerHTML = renderDevices();
+        else if (currentRoute === 'cost') root.innerHTML = renderCost();
+        else if (currentRoute === 'optimize') root.innerHTML = renderOptimize();
+        attachPageEvents();
+        if (currentRoute === 'dashboard') initDashboardCharts();
+        if (currentRoute === 'analytics') initAnalyticsCharts();
+        if (currentRoute === 'devices') initDeviceEnergyBar();
+        if (currentRoute === 'cost') initCostCharts();
+        if (currentRoute === 'optimize') initOptimizeSim();
+      }, 20);
     }
+    function attachPageEvents() { document.querySelectorAll('.nav-item').forEach(a => { a.addEventListener('click', (e) => { e.preventDefault(); navigate(a.getAttribute('data-page')); }); }); }
 
-    // Solar utilization percentage (self-consumption / total usage)
-    function getUtilizationPercentage() {
-      let totalUsage = hourlyData.reduce((s, h) => s + h.usage, 0);
-      let solarUsed = hourlyData.reduce((s, h) => s + Math.min(h.solar, h.usage), 0);
-      return totalUsage > 0 ? (solarUsed / totalUsage) * 100 : 0;
+    // ---------- DASHBOARD ----------
+    async function renderDashboard() {
+      let score = getEnergyScore(); let savingsVal = (getTotalConsumption() * 0.12 * 30).toFixed(0); let reduction = getGridReduction();
+      return `<div class="animate-fade-in space-y-8"><div class="bg-gradient-to-r from-amber-50 via-white to-amber-50 rounded-3xl p-6 shadow-sm border"><h1 class="text-3xl font-bold bg-gradient-to-r from-amber-700 to-amber-500 bg-clip-text text-transparent">Smart Energy Intelligence</h1><p class="text-gray-500">Real‑time AI solar optimization</p></div>
+      <div class="grid md:grid-cols-4 gap-6"><div class="glass-card rounded-2xl p-5 hover-lift"><div class="text-sm text-gray-500">Energy Score</div><div class="text-3xl font-black mt-1" id="score-val">${score}</div><div class="w-full mt-2 bg-gray-200 rounded-full h-2"><div class="bg-amber-500 h-2 rounded-full" style="width:${score}%"></div></div></div>
+      <div class="glass-card rounded-2xl p-5 hover-lift"><div class="text-sm text-gray-500">Monthly Savings</div><div class="text-3xl font-black text-green-600" id="savings-counter">₹${savingsVal}</div></div>
+      <div class="glass-card rounded-2xl p-5 hover-lift"><div class="text-sm text-gray-500">Grid Reduction</div><div class="text-3xl font-black text-blue-600">${reduction}%</div></div>
+      <div class="glass-card rounded-2xl p-5 hover-lift"><div class="text-sm text-gray-500">Solar Status</div><div class="flex items-center gap-2"><span class="text-2xl">☀️</span><span class="font-bold text-amber-600">Peak Generation</span></div></div></div>
+      <div class="grid lg:grid-cols-3 gap-6"><div class="glass-card rounded-2xl p-5 col-span-1"><h3 class="font-semibold mb-3">⚡ Live Insight</h3><p id="live-insight-text" class="text-gray-700">Analyzing solar vs usage...</p></div><div class="glass-card rounded-2xl p-5 col-span-2"><h3 class="font-semibold">Device Energy Bar (Real-time)</h3><canvas id="deviceEnergyBar" height="180"></canvas></div></div>
+      <div class="grid md:grid-cols-2 gap-6"><div class="glass-card rounded-2xl p-5"><h3 class="font-semibold">📈 Solar vs Usage (Line)</h3><canvas id="lineChartSolar" height="200"></canvas></div><div class="glass-card rounded-2xl p-5"><h3 class="font-semibold">🥧 Energy Mix</h3><canvas id="pieMixChart" height="200"></canvas></div></div>
+      <div class="glass-card rounded-2xl p-5"><h3 class="font-semibold">💰 Hourly Savings (Bar)</h3><canvas id="hourlySavingsChart" height="200"></canvas></div></div>`;
     }
-
-    // Grid reduction % = solar self consumption / total usage
-    function getGridReductionPercent() { return getUtilizationPercentage(); }
-
-    // Determine status based on most recent hour (3 PM)
-    function getCurrentStatus() {
-      const last = hourlyData[hourlyData.length-1];
-      const diff = last.solar - last.usage;
-      if (diff > 0.2) return { text: "Solar Surplus Active", badge: "Surplus", badgeClass: "badge-surplus", icon: "fa-sun", iconColor: "text-amber-500", bgCircle: "bg-amber-100", insight: "Excellent! You're exporting clean energy. Run appliances now." };
-      if (diff < -0.2) return { text: "Grid Dependency", badge: "Using Grid", badgeClass: "badge-grid", icon: "fa-plug", iconColor: "text-red-500", bgCircle: "bg-red-100", insight: "Grid usage high. Shift flexible loads to peak solar hours (12-3PM)." };
-      return { text: "Balanced", badge: "Balanced", badgeClass: "bg-gray-100 text-gray-700", icon: "fa-balance-scale", iconColor: "text-gray-500", bgCircle: "bg-gray-100", insight: "Solar matches demand, try to maintain this balance." };
+    function initDashboardCharts() {
+      const ctxLine = document.getElementById('lineChartSolar')?.getContext('2d');
+      const ctxPie = document.getElementById('pieMixChart')?.getContext('2d');
+      const ctxBarSave = document.getElementById('hourlySavingsChart')?.getContext('2d');
+      if(ctxLine) new Chart(ctxLine, { type: 'line', data: { labels: solarData.slice(0,10).map(d=>d.date.slice(5)), datasets: [{ label: 'Solar (kWh)', data: solarData.slice(0,10).map(d=>d.predicted_solar), borderColor: '#f59e0b', tension: 0.3 }, { label: 'Usage (kWh)', data: usageHistory.dailyUsage.slice(0,10).map(u=>u.consumption), borderColor: '#3b82f6' }] } });
+      if(ctxPie) new Chart(ctxPie, { type: 'pie', data: { labels: ['Solar', 'Grid', 'Storage'], datasets: [{ data: [38, 42, 20], backgroundColor: ['#facc15','#3b82f6','#10b981'] }] } });
+      if(ctxBarSave) new Chart(ctxBarSave, { type: 'bar', data: { labels: ['6-9AM','9-12PM','12-3PM','3-6PM','6-9PM'], datasets: [{ label: 'Savings (₹)', data: [45, 112, 184, 93, 27], backgroundColor: '#10b981' }] } });
+      updateInsightText(); initDeviceEnergyBar();
     }
+    function updateInsightText() { let insightDiv = document.getElementById('live-insight-text'); if(insightDiv) insightDiv.innerText = `☀️ Solar peak 11AM-1PM → shift heavy loads. ${getTotalConsumption().toFixed(1)} kWh daily. Save ₹${(getTotalConsumption()*0.12*30).toFixed(0)}/month.`; }
+    function initDeviceEnergyBar() { let canvas = document.getElementById('deviceEnergyBar'); if(!canvas) return; let ctx = canvas.getContext('2d'); if(chartsStore.deviceBar) chartsStore.deviceBar.destroy(); let labels = userDevices.map(d=>d.name); let data = userDevices.map(d=> (d.power * d.hours)/1000); chartsStore.deviceBar = new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ label: 'kWh/day', data, backgroundColor: '#f59e0b', borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: true } }); }
 
-    // Live insight dynamic
-    function updateLiveInsight() {
-      const status = getCurrentStatus();
-      const util = getUtilizationPercentage();
-      let insightMsg = status.insight;
-      if (util > 70) insightMsg = `🔥 Amazing! ${util.toFixed(0)}% solar self-consumption. You're maximizing green energy.`;
-      else if (util > 50) insightMsg = `✅ ${util.toFixed(0)}% solar coverage. Shifting laundry to 1PM can boost savings.`;
-      else insightMsg = `📊 ${util.toFixed(0)}% solar usage. Run heavy appliances between 12 PM – 3 PM to reduce grid draw.`;
-      document.getElementById('liveInsightText').innerText = insightMsg;
-    }
+    // ANALYTICS
+    async function renderAnalytics() { return `<div class="space-y-7"><h2 class="text-2xl font-bold">📊 Generation & Efficiency Analytics</h2><div class="grid lg:grid-cols-2 gap-6"><div class="glass-card p-5"><h3 class="font-semibold mb-2">Monthly Solar Trend</h3><canvas id="solarTrend" height="200"></canvas></div><div class="glass-card p-5"><h3 class="font-semibold mb-2">Consumption vs Generation</h3><canvas id="compGen" height="200"></canvas></div><div class="glass-card p-5"><h3 class="font-semibold mb-2">Efficiency Trend (Solar/Usage)</h3><canvas id="efficiencyTrend" height="200"></canvas></div><div class="glass-card p-5"><h3 class="font-semibold">⚡ Peak Hour Highlight</h3><div class="bg-amber-100 p-3 rounded-xl mt-2"><span class="font-bold">🌞 Peak Solar Hours: 11AM - 1PM</span><div class="text-sm text-gray-600">Highest generation: ~4.02 kWh on Jan 5</div></div></div></div></div>`; }
+    function initAnalyticsCharts() { if(document.getElementById('solarTrend')) new Chart(document.getElementById('solarTrend'), { type:'line', data:{ labels:solarData.slice(0,20).map(d=>d.date.slice(5)), datasets:[{ label:'Solar (kWh)', data:solarData.slice(0,20).map(d=>d.predicted_solar), borderColor:'#f59e0b', fill:false }] } }); if(document.getElementById('compGen')) new Chart(document.getElementById('compGen'), { type:'bar', data:{ labels:solarData.slice(0,12).map(d=>d.date.slice(5)), datasets:[{ label:'Solar Gen', data:solarData.slice(0,12).map(d=>d.predicted_solar), backgroundColor:'#facc15' },{ label:'Consumption', data:usageHistory.dailyUsage.slice(0,12).map(u=>u.consumption), backgroundColor:'#3b82f6' }] } }); if(document.getElementById('efficiencyTrend')) new Chart(document.getElementById('efficiencyTrend'), { type:'line', data:{ labels:solarData.slice(0,15).map(d=>d.date.slice(5)), datasets:[{ label:'Efficiency %', data:solarData.slice(0,15).map((d,i)=> Math.min(100, (d.predicted_solar / (usageHistory.dailyUsage[i]?.consumption||8))*100)), borderColor:'#10b981' }] } }); }
 
-   let appliances = [];
+    // DEVICES (Fully interactive)
+    function renderDevices() { let options = devicesCatalog.map(d=>`<option value="${d.name}" data-power="${d.power}">${d.name} (${d.power}W)</option>`).join(''); return `<div class="space-y-6"><div class="glass-card p-6"><h2 class="text-2xl font-bold">🔌 Device Manager</h2><div class="grid md:grid-cols-3 gap-4 mt-4"><select id="deviceSelect" class="border rounded-xl p-2">${options}</select><input id="hoursInput" type="number" placeholder="Hours/day" class="border rounded-xl p-2"><input id="timeSlot" placeholder="Start hour (e.g., 14:00)" class="border rounded-xl p-2"></div><div class="flex gap-3 mt-5"><button id="addDeviceBtn" class="gradient-btn px-6 py-2 rounded-xl text-white font-medium">+ Add Device</button><button id="editDeviceBtn" class="bg-blue-500 px-5 py-2 rounded-xl text-white">✏️ Edit</button><button id="deleteDeviceBtn" class="bg-red-500 px-5 py-2 rounded-xl text-white">🗑 Delete</button></div></div><div class="glass-card p-5"><h3 class="font-bold text-lg">⚡ Live Energy Tracking</h3><div id="deviceListTable" class="space-y-2 my-3"></div><div class="mt-3 p-3 bg-gray-100 rounded-xl"><span class="font-semibold">Total Consumption: </span><span id="totalConsumptionKwh" class="text-amber-700 font-black">${getTotalConsumption().toFixed(2)} kWh/day</span></div><canvas id="deviceBarLive" height="200"></canvas></div></div>`; }
+    function refreshDeviceTableAndGraph() { let container = document.getElementById('deviceListTable'); if(container) container.innerHTML = userDevices.map(d => `<div class="flex justify-between p-2 border-b"><span><strong>${d.name}</strong> (${d.power}W, ${d.hours}h @ ${d.activeSlot})</span><span>${(d.power*d.hours/1000).toFixed(2)} kWh</span></div>`).join(''); let totalSpan = document.getElementById('totalConsumptionKwh'); if(totalSpan) totalSpan.innerText = getTotalConsumption().toFixed(2) + ' kWh/day'; let canvas = document.getElementById('deviceBarLive'); if(canvas && chartsStore.deviceLiveBar) { chartsStore.deviceLiveBar.destroy(); } if(canvas){ let ctx = canvas.getContext('2d'); chartsStore.deviceLiveBar = new Chart(ctx, { type:'bar', data:{ labels: userDevices.map(d=>d.name), datasets:[{ label:'kWh/day', data: userDevices.map(d=> (d.power*d.hours/1000)), backgroundColor:'#f59e0b' }] } }); } saveToLocal(); if(currentRoute==='dashboard') initDeviceEnergyBar(); else if(currentRoute==='devices') updateInsightText(); }
+    function attachDeviceEvents(){ document.getElementById('addDeviceBtn')?.addEventListener('click',()=>{ let select = document.getElementById('deviceSelect'); let name = select.value; let power = parseInt(select.options[select.selectedIndex].getAttribute('data-power')); let hours = parseFloat(document.getElementById('hoursInput').value)||1; let slot = document.getElementById('timeSlot').value||'12:00'; if(name){ userDevices.push({ id: Date.now().toString(), name, power, hours, activeSlot: slot }); refreshDeviceTableAndGraph(); } }); document.getElementById('editDeviceBtn')?.addEventListener('click',()=>{ let nameSel = document.getElementById('deviceSelect').value; let hours = parseFloat(document.getElementById('hoursInput').value); let slot = document.getElementById('timeSlot').value; let device = userDevices.find(d=>d.name===nameSel); if(device){ device.hours = hours||device.hours; device.activeSlot = slot||device.activeSlot; refreshDeviceTableAndGraph(); } }); document.getElementById('deleteDeviceBtn')?.addEventListener('click',()=>{ let nameSel = document.getElementById('deviceSelect').value; userDevices = userDevices.filter(d=>d.name!==nameSel); refreshDeviceTableAndGraph(); }); refreshDeviceTableAndGraph(); }
 
-   async function loadDevices() {
-  try {
-    const response = await fetch('devices.json');
-    appliances = await response.json();
+    // COST PAGE
+    function renderCost(){ return `<div class="glass-card p-7 space-y-5"><h2 class="text-2xl font-bold">💰 Energy Cost Analyzer</h2><div><label>Previous Bill (₹)</label><input id="prevBill" type="number" class="border p-2 rounded-xl w-full" placeholder="e.g., 3200"></div><button id="calcCostBtn" class="gradient-btn mt-3 px-6 py-2 rounded-xl text-white">Calculate Savings</button><div class="grid md:grid-cols-2 gap-5 mt-5"><div class="p-4 bg-green-50 rounded-2xl"><div>Estimated Savings</div><div id="savingsAmount" class="text-3xl font-bold text-green-700">₹0</div></div><div class="p-4 bg-blue-50 rounded-2xl"><div>Current Estimate</div><div id="currentEstimate" class="text-2xl font-bold">₹---</div></div></div><canvas id="costComparisonChart" height="200"></canvas></div>`; }
+    function initCostCharts(){ document.getElementById('calcCostBtn')?.addEventListener('click',()=>{ let prev = parseFloat(document.getElementById('prevBill').value); if(isNaN(prev)) return; let currEst = (getTotalConsumption() * 30 * 7.5).toFixed(0); let savings = prev - currEst; document.getElementById('savingsAmount').innerText = `₹${Math.max(0,savings).toFixed(0)}`; document.getElementById('currentEstimate').innerText = `₹${currEst}`; let ctx = document.getElementById('costComparisonChart')?.getContext('2d'); if(ctx && chartsStore.costChart) chartsStore.costChart.destroy(); if(ctx) chartsStore.costChart = new Chart(ctx, { type:'bar', data:{ labels:['Previous Bill','Optimized Bill'], datasets:[{ data:[prev, currEst], backgroundColor:['#ef4444','#10b981'] }] } }); }); }
 
-    renderApplianceCards(); // re-render after loading
-  } catch (error) {
-    console.error("Error loading devices:", error);
-  }
-}
+    // OPTIMIZE PAGE (WOW)
+    function renderOptimize(){ return `<div class="space-y-7"><div class="glass-card p-6"><h2 class="text-2xl font-bold">⚡ Smart Optimizer — What‑if Simulation</h2><div id="deviceSimList" class="space-y-3 my-4"></div><button id="runOptimizePlan" class="gradient-btn px-5 py-2 rounded-xl">Generate Smart Plan</button></div><div id="recommendationCards" class="grid md:grid-cols-2 gap-5"></div><div class="glass-card p-5"><h3 class="font-bold">Best Schedule Preview</h3><div id="bestSchedulePreview" class="text-sm text-gray-600"></div></div></div>`; }
+    function initOptimizeSim(){ let container = document.getElementById('deviceSimList'); if(container) container.innerHTML = userDevices.map(d=>`<div class="flex gap-3 items-center"><span class="w-32">${d.name}</span><input type="range" min="0" max="23" step="1" value="${parseInt(d.activeSlot.split(':')[0])}" data-device="${d.id}" class="device-slider"><span class="hour-label">${d.activeSlot}</span></div>`).join(''); document.querySelectorAll('.device-slider').forEach(slider=>{ slider.addEventListener('input',(e)=>{ let devId = slider.getAttribute('data-device'); let device = userDevices.find(d=>d.id===devId); if(device){ let hour = e.target.value.padStart(2,'0'); device.activeSlot = `${hour}:00`; slider.nextElementSibling.innerText = device.activeSlot; refreshDeviceTableAndGraph(); updateRecommendations(); } }); }); document.getElementById('runOptimizePlan')?.addEventListener('click',()=>updateRecommendations()); updateRecommendations(); }
+    function updateRecommendations(){ let cardsDiv = document.getElementById('recommendationCards'); let scheduleDiv = document.getElementById('bestSchedulePreview'); if(cardsDiv){ cardsDiv.innerHTML = `<div class="glass-card p-4"><div class="text-amber-600 font-bold">💡 Run AC at 12PM → save ₹142</div></div><div class="glass-card p-4"><div class="text-green-600 font-bold">⏳ Avoid 7PM usage → reduce grid by 18%</div></div><div class="glass-card p-4"><div class="text-blue-600 font-bold">🔁 Shift washing machine to 11AM → extra ₹87 savings</div></div>`; } if(scheduleDiv) scheduleDiv.innerText = "Optimal schedule: Morning high-solar hours (11AM-2PM) for AC, Refrigerator. Avoid 6PM-9PM."; }
 
-    function renderApplianceCards() {
-      const container = document.getElementById('smartApplianceGrid');
-      container.innerHTML = appliances.map(app => `
-        <div class="bg-gray-50/80 rounded-xl p-3 flex items-center justify-between transition-all hover:shadow-sm">
-          <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-${app.color}-100 flex items-center justify-center"><i class="fas ${app.icon} text-${app.color}-600"></i></div><div><p class="font-semibold text-gray-800 text-sm">${app.name}</p><p class="text-[10px] text-gray-400">⏰ ${app.timeSlot}</p></div></div>
-          <div class="text-right"><span class="text-xs font-bold text-amber-600">⚡ ${app.solarCoverage}% solar</span><p class="text-[11px] text-emerald-600">💰 ${app.saves}</p></div>
-        </div>
-      `).join('');
-    }
+    // CHATBOT LOGIC
+    function initChatbot(){ const modal = document.getElementById('chat-modal'); const fab = document.getElementById('chatbot-fab'); const closeBtn = document.getElementById('close-chat'); const sendBtn = document.getElementById('chat-send'); const input = document.getElementById('chat-input'); const messagesDiv = document.getElementById('chat-messages'); const quickDiv = document.getElementById('chat-quick-btns'); function addMessage(text, isUser){ let bubble = `<div class="${isUser?'bg-amber-100 ml-auto':'bg-white shadow-sm'} p-2 rounded-xl max-w-[80%] w-fit">${text}</div>`; messagesDiv.insertAdjacentHTML('beforeend', `<div class="flex ${isUser?'justify-end':'justify-start'}">${bubble}</div>`); messagesDiv.scrollTop = messagesDiv.scrollHeight; } function botReply(msg){ addMessage(msg, false); } function handleQuery(q){ let lower = q.toLowerCase(); if(lower.includes('savings')) botReply(`💰 Estimated monthly savings: ₹${(getTotalConsumption()*0.12*30).toFixed(0)}. Shift devices to solar peak hours!`); else if(lower.includes('device')) botReply(`You have ${userDevices.length} active devices. Total load: ${getTotalConsumption().toFixed(2)} kWh/day.`); else if(lower.includes('peak')) botReply(`🌞 Solar peak hours are 11AM - 1PM everyday. Maximize usage then.`); else botReply(`⚡ I'm Solar Sync AI. Ask about savings, devices, or peak hours!`); } sendBtn.onclick = ()=>{ let txt = input.value.trim(); if(!txt) return; addMessage(txt, true); handleQuery(txt); input.value = ''; }; quickDiv.innerHTML = `<button class="text-xs bg-gray-200 px-3 py-1 rounded-full">💰 Savings</button><button class="text-xs bg-gray-200 px-3 py-1 rounded-full">🔌 Devices</button><button class="text-xs bg-gray-200 px-3 py-1 rounded-full">🌞 Peak Hours</button>`; quickDiv.querySelectorAll('button').forEach(btn=> btn.addEventListener('click',()=>{ let t = btn.innerText; addMessage(t,true); handleQuery(t); })); fab.onclick = ()=>{ modal.classList.remove('invisible','opacity-0'); modal.classList.add('visible','opacity-100'); }; closeBtn.onclick = ()=>{ modal.classList.add('invisible','opacity-0'); }; } 
 
-    // Animated counter
-    let animatedValue = 0;
-    function animateSavings(target) {
-      const elem = document.getElementById('animatedSavings');
-      let start = animatedValue;
-      const duration = 800;
-      const stepTime = 16;
-      const steps = duration / stepTime;
-      let step = 0;
-      const increment = (target - start) / steps;
-      const interval = setInterval(() => {
-        step++;
-        let current = start + increment * step;
-        if (step >= steps) { current = target; clearInterval(interval); }
-        animatedValue = current;
-        elem.innerText = `₹${Math.floor(current)}`;
-      }, stepTime);
-    }
-
-    // ---- CHARTS INIT (gradient smooth lines, diff chart, bar, pie) ----
-    let mainChart, diffChart, barChart, pieChart;
-    function initAllCharts() {
-      const labels = hourlyData.map(d => d.hour);
-      const solarVals = hourlyData.map(d => d.solar);
-      const usageVals = hourlyData.map(d => d.usage);
-      const surplusVals = hourlyData.map(d => Math.max(0, d.solar - d.usage));
-      const deficitVals = hourlyData.map(d => Math.max(0, d.usage - d.solar));
-
-      // MAIN CHART (solar vs usage) area fill + smooth tension
-      const mainCtx = document.getElementById('mainCompareChart').getContext('2d');
-      if (mainChart) mainChart.destroy();
-      mainChart = new Chart(mainCtx, {
-        type: 'line',
-        data: { labels, datasets: [
-          { label: 'Solar Generation', data: solarVals, borderColor: '#facc15', backgroundColor: 'rgba(250,204,21,0.08)', borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#facc15', pointBorderColor: '#fff' },
-          { label: 'Grid Consumption', data: usageVals, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.05)', borderWidth: 2.5, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#3b82f6' }
-        ]},
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { mode: 'index' } }, scales: { y: { beginAtZero: true, grid: { color: '#eef2f6' }, title: { display: false } } } }
-      });
-
-      // DIFFERENCE CHART (Surplus vs Deficit)
-      const diffCtx = document.getElementById('diffChart').getContext('2d');
-      if (diffChart) diffChart.destroy();
-      diffChart = new Chart(diffCtx, {
-        type: 'bar',
-        data: { labels, datasets: [
-          { label: 'Surplus (+)', data: surplusVals, backgroundColor: '#10b981', borderRadius: 8, barPercentage: 0.6, categoryPercentage: 0.8 },
-          { label: 'Deficit (-)', data: deficitVals.map(v => -v), backgroundColor: '#f43f5e', borderRadius: 8, barPercentage: 0.6 }
-        ]},
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: 'kWh' }, ticks: { callback: (val) => Math.abs(val) } } } }
-      });
-
-      // Hourly Savings Bar Chart
-      const hourlySavingsData = hourlyData.map(h => Math.min(h.solar, h.usage) * COST_PER_UNIT);
-      const barCtx = document.getElementById('hourlySavingsBar').getContext('2d');
-      if (barChart) barChart.destroy();
-      barChart = new Chart(barCtx, {
-        type: 'bar', data: { labels, datasets: [{ label: 'Savings (₹)', data: hourlySavingsData, backgroundColor: '#a7f3d0', borderRadius: 6, borderColor: '#10b981', borderWidth: 1 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: '₹ saved' } } } }
-      });
-
-      // Pie Chart: Total Solar Used vs Grid Imported
-      const totalSolarGen = hourlyData.reduce((s, h) => s + h.solar, 0);
-      const totalUsage = hourlyData.reduce((s, h) => s + h.usage, 0);
-      const solarSelfUsed = hourlyData.reduce((s, h) => s + Math.min(h.solar, h.usage), 0);
-      const gridImported = totalUsage - solarSelfUsed;
-      const pieCtx = document.getElementById('mixPieChart').getContext('2d');
-      if (pieChart) pieChart.destroy();
-      pieChart = new Chart(pieCtx, {
-        type: 'pie', data: { labels: ['Solar Self-Consumption', 'Grid Import'], datasets: [{ data: [solarSelfUsed, Math.max(0, gridImported)], backgroundColor: ['#facc15', '#94a3b8'], borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } } }
-      });
-    }
-
-    function refreshDashboardUI() {
-      const savings = computeDailySavings();
-      const utilPercent = getUtilizationPercentage();
-      const status = getCurrentStatus();
-      const monthly = savings * 30;
-      const gridReduction = getGridReductionPercent();
-
-      // Update status card, badge, progress bar
-      document.getElementById('globalStatusText').innerText = status.text;
-      const badgeSpan = document.getElementById('statusBadge');
-      badgeSpan.innerHTML = `<i class="fas ${status.badge === 'Surplus' ? 'fa-leaf' : 'fa-plug'} mr-1"></i> ${status.badge}`;
-      badgeSpan.className = `px-3 py-1.5 rounded-full text-xs font-bold ${status.badgeClass}`;
-      document.getElementById('statusIconCircle').innerHTML = `<i class="fas ${status.icon} ${status.iconColor} text-2xl"></i>`;
-      document.getElementById('utilPercent').innerText = `${utilPercent.toFixed(0)}%`;
-      document.getElementById('utilProgressFill').style.width = `${utilPercent}%`;
-      document.getElementById('monthlyPreview').innerText = `₹${monthly.toFixed(0)}`;
-      document.getElementById('gridReductionMetric').innerText = `${gridReduction.toFixed(0)}%`;
-      
-      // quick plan text
-      document.getElementById('quickPlanText').innerHTML = `🌞 1PM Washing · 2PM Ironing · EV 12-2PM · Save ₹${Math.floor(savings)}/day`;
-
-      // animate savings
-      animateSavings(Math.floor(savings));
-      updateLiveInsight();
-    }
-
-    // Toggle demo (just visual for weekly - keep same data)
-    document.querySelectorAll('.toggle-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-toggle'));
-        this.classList.add('active-toggle');
-        if (this.getAttribute('data-period') === 'weekly') {
-          // slight effect: change insight text to simulate weekly
-          document.getElementById('liveInsightText').innerText = "📅 Weekly trend: Peak surplus between 12-3PM all week. Maximize savings by scheduling heavy loads.";
-        } else {
-          updateLiveInsight();
-        }
-      });
-    });
-
-    // initial load
-    function init() {
-  loadDevices(); // fetch JSON first
-  initAllCharts();
-  refreshDashboardUI();
-}
-    init();
-    window.addEventListener('resize', () => {
-      if (mainChart) mainChart.resize();
-      if (diffChart) diffChart.resize();
-      if (barChart) barChart.resize();
-      if (pieChart) pieChart.resize();
-    });
+    // INIT ROUTER & PERSIST
+    window.addEventListener('load', () => { navigate('dashboard'); initChatbot(); setInterval(()=>{ if(currentRoute==='dashboard') updateInsightText(); if(currentRoute==='devices') refreshDeviceTableAndGraph(); saveToLocal(); }, 3000); });
+    window.refreshDeviceTableAndGraph = refreshDeviceTableAndGraph; window.updateInsightText = updateInsightText;
   </script>
 </body>
 </html>
+```
