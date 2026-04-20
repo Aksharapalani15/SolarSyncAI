@@ -266,7 +266,14 @@ function showRecommendations() {
  // text += `\n💸 Potential Savings: ₹${savings.savings}`;
   text += `\n You can save ${savings.percent}% on your electricity bill`;
 
+  
+  generateSolarOptimization().then(solarRecs => {
+  solarRecs.forEach(r => {
+    text += "\n" + r;
+  });
+
   document.getElementById("recommendations").innerText = text;
+});
 }
 function estimateSavings() {
   let total = usageData.reduce((sum, d) => sum + d.energy, 0);
@@ -354,4 +361,48 @@ function generateInsights() {
   } else {
     return "✅ Good usage pattern — balanced energy consumption";
   }
+  // 🌞 MEMBER 3 - SOLAR OPTIMIZATION ENGINE
+
+async function loadSolarData() {
+  const res = await fetch('../member1 solar/solar_predictions.json');
+  return await res.json();
+}
+
+function convertTo24Hour(hourStr) {
+  // "11AM" → 11, "1PM" → 13
+  let hour = parseInt(hourStr);
+  if (hourStr.includes("PM") && hour !== 12) hour += 12;
+  if (hourStr.includes("AM") && hour === 12) hour = 0;
+  return hour;
+}
+
+async function generateSolarOptimization() {
+  const solarData = await loadSolarData();
+  const today = solarData[0]; // use first day
+
+  const peakHoursRaw = today.peak_hours;
+  const peakHours = peakHoursRaw.map(convertTo24Hour);
+
+  let suggestions = [];
+
+  usageData.forEach(d => {
+    if (!d.time) return;
+
+    let hour = parseInt(d.time.split(":")[0]);
+
+    // If device used OUTSIDE solar peak → suggest shift
+    if (!peakHours.includes(hour) && d.energy > 1) {
+      suggestions.push(
+        `🌞 Shift ${d.name} from ${hour}:00 to ${peakHoursRaw.join(", ")} for solar usage`
+      );
+    }
+  });
+
+  // If everything is good
+  if (suggestions.length === 0 && usageData.length > 0) {
+    suggestions.push("✅ Your usage is well aligned with solar energy!");
+  }
+
+  return suggestions;
+}
 }
