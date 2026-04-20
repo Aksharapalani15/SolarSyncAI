@@ -1,160 +1,351 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚡ Device Energy Profiler</title>
+  <title>⚡ Solar Sync Dashboard</title>
   
-
-  <!-- Tailwind CSS -->
-
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Chart.js -->
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <style>
+    canvas {
+      max-width: 100%;
+      height: auto !important;
+    }
+
+    /* 🌫️ GLASSMORPHISM */
+    .glass {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    pre, #insights {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+  </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen p-6">
+<!-- 🌈 Background improved for glass -->
+<body class="bg-gradient-to-br from-blue-100 via-white to-purple-100 min-h-screen p-4 sm:p-6">
 
-  <div class="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+<div class="max-w-6xl mx-auto">
 
+  <!-- HEADER -->
+  <div class="mb-8 text-center">
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">⚡ Solar Sync Dashboard</h1>
+    <p class="text-gray-500 mt-2 text-sm sm:text-base">
+      Smart Energy Monitoring & Optimization
+    </p>
+  </div>
 
-<!-- Title -->
-<h1 class="text-3xl font-bold text-center mb-6">
-  ⚡ Device Energy Profiler
-</h1>
+  <!-- KPI CARDS -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
 
-<!-- Input Section -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <p class="text-gray-500 text-sm">Total Energy</p>
+      <h2 id="totalEnergy" class="text-2xl font-bold text-blue-600">0 kWh</h2>
+    </div>
 
-  <!-- Device Dropdown -->
-  <select id="deviceSelect" class="p-3 border rounded-lg">
-    <option value="">Select Device</option>
-  </select>
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <p class="text-gray-500 text-sm">Monthly Estimate</p>
+      <h2 id="monthlyEnergy" class="text-2xl font-bold text-green-600">0 kWh</h2>
+    </div>
 
-  <!-- Hours Input -->
-  <input id="hours" type="number" placeholder="Hours Used"
-    class="p-3 border rounded-lg">
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <p class="text-gray-500 text-sm">Efficiency</p>
+      <h2 id="efficiency" class="text-2xl font-bold text-purple-600">0%</h2>
+    </div>
 
-  <!-- Time Input -->
-  <input id="time" type="time"
-    class="p-3 border rounded-lg">
+  </div>
 
-  <!-- Add Button -->
-  <button onclick="addDevice()"
-    class="bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-lg">
-    Add Device
+  <!-- INPUT -->
+  <div class="glass-strong p-5 sm:p-6 rounded-2xl shadow-lg mb-8">
+
+    <h2 class="text-lg font-semibold mb-4">➕ Add Device Usage</h2>
+
+    <div class="flex flex-col gap-3 md:grid md:grid-cols-4">
+
+      <select id="deviceSelect" class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
+        <option value="">Select Device</option>
+      </select>
+
+      <input id="hours" type="number" placeholder="Hours"
+        class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <input id="time" type="time"
+        class="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
+
+      <button onclick="addDevice()"
+        class="bg-gradient-to-r from-blue-500 to-purple-500 hover:opacity-90 text-white rounded-lg py-3 font-semibold w-full transition">
+        Add Device
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- CHARTS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <h2 class="font-semibold mb-3">📊 Device Usage</h2>
+      <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <h2 class="font-semibold mb-3">🥧 Consumption Share</h2>
+      <canvas id="pieChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- MONTHLY + PREDICTION -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <h2 class="font-semibold mb-3">📅 Monthly Trend</h2>
+      <canvas id="monthlyChart"></canvas>
+    </div>
+
+    <div class="glass p-5 sm:p-6 rounded-2xl shadow-lg">
+      <h2 class="font-semibold mb-3">🔮 7-Day Prediction</h2>
+      <canvas id="predictionChart"></canvas>
+      <p class="text-xs text-gray-500 mt-2">Based on recent usage trends</p>
+    </div>
+
+  </div>
+
+  <!-- INSIGHTS + RECOMMENDATIONS -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+  <!-- 🌱 INSIGHTS CARD -->
+  <div class="glass-strong p-6 rounded-2xl shadow-lg relative overflow-hidden">
+
+    <!-- Glow effect -->
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-green-300 opacity-20 rounded-full blur-2xl"></div>
+
+    <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+      🌱 Insights
+    </h2>
+
+    <p id="insights"
+      class="text-sm sm:text-base leading-relaxed text-gray-800 transition-all duration-300">
+      Insights will appear here...
+    </p>
+
+  </div>
+
+  <!-- 💡 RECOMMENDATIONS CARD -->
+  <div class="glass-strong p-6 rounded-2xl shadow-lg relative overflow-hidden">
+
+    <!-- Glow -->
+    <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-yellow-300 opacity-20 rounded-full blur-2xl"></div>
+
+    <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+      💡 Smart Recommendations
+    </h2>
+
+    <pre id="recommendations"
+      class="whitespace-pre-wrap text-sm text-gray-900 bg-white/40 p-4 rounded-lg backdrop-blur-md border border-white/30 leading-relaxed transition-all duration-300">
+Recommendations will appear here...
+    </pre>
+
+  </div>
+
+</div>
+
+<div class="glass-strong p-6 rounded-2xl shadow-lg relative overflow-hidden">
+
+  <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+    🎛️ Smart Simulation Control
+  </h2>
+
+  <!-- SLIDERS -->
+  <div class="space-y-5 mb-5">
+
+    <!-- Shift % -->
+    <div>
+      <label class="text-sm font-medium">
+        🔄 Shift Usage to Daytime:
+        <span id="shiftValue" class="font-bold text-green-600">30%</span>
+      </label>
+      <input type="range" min="0" max="80" value="30"
+        id="shiftSlider"
+        class="w-full mt-2">
+    </div>
+
+    <!-- Cost -->
+    <div>
+      <label class="text-sm font-medium">
+        💰 Electricity Rate:
+        ₹<span id="rateValue" class="font-bold text-blue-600">8</span>/kWh
+      </label>
+      <input type="range" min="5" max="15" value="8"
+        id="rateSlider"
+        class="w-full mt-2">
+    </div>
+
+  </div>
+
+  <!-- BUTTON -->
+  <button onclick="runSimulationWithControls()"
+    class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:scale-105 transition-transform text-white px-6 py-3 rounded-lg mb-4 shadow-md">
+    ⚡ Run Optimization
   </button>
 
-</div>
-
-<!-- Table Section -->
-<div class="overflow-x-auto mb-6">
-  <table class="w-full border border-gray-200 text-left">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="p-3">Device</th>
-        <th class="p-3">Hours</th>
-        <th class="p-3">Energy (kWh)</th>
-        <th class="p-3">Time</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
-</div>
-
-<!-- Summary -->
-<div id="summary" class="text-lg font-semibold mb-4">
-  Total Consumption: 0 kWh
-</div>
-<div class="grid grid-cols-3 gap-4 mb-6 text-center">
-
-  <div class="bg-blue-100 p-4 rounded">
-    <p class="text-sm">Total Energy</p>
-    <p id="monthlyEnergy" class="text-sm text-gray-600">Monthly: 0 kWh</p>
-    <h2 id="totalEnergy" class="text-xl font-bold">0 kWh</h2>
-  </div>
-
-  <div class="bg-green-100 p-4 rounded">
-    <p class="text-sm">Efficiency</p>
-    <h2 id="efficiency" class="text-xl font-bold">0%</h2>
-  </div>
-
-  <div class="bg-red-100 p-4 rounded">
-    <p class="text-sm">Peak Hour</p>
-    <h2 id="peakHour" class="text-xl font-bold">--</h2>
+  <!-- RESULT -->
+  <div class="bg-white/40 backdrop-blur-md border border-white/30 p-4 rounded-xl">
+    <pre id="simulationResult"
+      class="whitespace-pre-wrap text-sm text-gray-900 leading-relaxed">
+Simulation result will appear here...
+    </pre>
   </div>
 
 </div>
-<!-- Chart -->
-<div class="grid md:grid-cols-2 gap-6 mb-6">
+<!-- 🤖 AI CHAT ASSISTANT -->
+<div class="glass-strong p-6 rounded-2xl shadow-lg mt-8">
 
-  <!-- Bar Chart -->
-  <div>
-    <h2 class="text-lg font-semibold mb-2">Device Energy Usage</h2>
-    <canvas id="barChart"></canvas>
+  <h2 class="text-lg font-semibold mb-3">🤖 Energy AI Assistant</h2>
+
+  <!-- Chat Messages -->
+  <div id="chatBox"
+    class="h-60 overflow-y-auto bg-white/40 backdrop-blur-md border border-white/30 rounded-lg p-3 mb-4 text-sm">
+    
+    <div class="text-gray-600">👋 Ask me about your energy usage...</div>
+  
   </div>
 
-  <!-- Pie Chart -->
-  <div>
-    <h2 class="text-lg font-semibold mb-2">% Consumption</h2>
-    <canvas id="pieChart"></canvas>
-  </div>
+  <!-- Input -->
+  <div class="flex gap-2">
+    <input id="chatInput" type="text" placeholder="Type your question..."
+      class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-blue-400">
 
-</div>
-<div class="card bg-white p-4 rounded-xl shadow mb-6">
-  <h2 class="text-lg font-semibold mb-2">📅 Monthly Energy Usage</h2>
-  <canvas id="monthlyChart"></canvas>
-</div>
-<div class="card bg-white p-4 rounded-xl shadow mb-6">
-  <h2 class="text-lg font-semibold mb-2">🔮 7-Day Energy Prediction</h2>
-
-  <canvas id="predictionChart"></canvas>
-
-  <!-- 👇 ADD HERE -->
-  <p class="text-xs text-gray-500 mt-2">
-    *Prediction based on recent usage trends
-  </p>
-</div>
-
-<!-- Insights -->
-<div id="insights" class="p-4 bg-green-100 text-green-700 rounded-lg font-medium">
-  Insights will appear here...
-</div>
-<div class="mt-6 p-4 bg-yellow-100 text-yellow-800 rounded-lg">
-  <h2 class="font-bold mb-2"> Smart Recommendations</h2>
-  <div id="recommendations">Recommendations will appear here...</div>
-</div>
-<!-- What-if Simulation -->
-<div class="mt-6 p-4 bg-blue-50 rounded-lg">
-
-  <h2 class="font-bold mb-2">🔮 What-if Simulation</h2>
-
-  <button onclick="runSimulation()"
-    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mb-3">
-    Optimize My Usage
-  </button>
-
-  <div id="simulationResult"
-    class="p-3 bg-blue-100 text-blue-800 rounded">
-    Simulation result will appear here...
+    <button onclick="sendMessage()"
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-lg">
+      Send
+    </button>
   </div>
 
 </div>
+<!-- JS -->
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 
+<script>
+/* ================= ANIMATED CHARTS ================= */
 
-  </div>
+let barChart, pieChart, monthlyChart, predictionChart;
 
-  <!-- JavaScript Files -->
+function getAnimation() {
+  return {
+    duration: 1200,
+    easing: "easeOutQuart"
+  };
+}
 
-  <script src="js/data.js"></script>
+function updateChart() {
+  const labels = usageData.map(d => d.name);
+  const data = usageData.map(d => d.energy);
 
-  <script src="js/app.js"></script>
+  if (barChart) barChart.destroy();
+  if (pieChart) pieChart.destroy();
 
-  <script src="js/charts.js"></script>
+  barChart = new Chart(document.getElementById("barChart"), {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Energy (kWh)",
+        data,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: getAnimation()
+    }
+  });
+
+  pieChart = new Chart(document.getElementById("pieChart"), {
+    type: "pie",
+    data: {
+      labels,
+      datasets: [{ data }]
+    },
+    options: {
+      responsive: true,
+      animation: { animateRotate: true, duration: 1200 }
+    }
+  });
+}
+
+/* MONTHLY */
+function updateMonthlyChart() {
+  let labels = Array.from({ length: 30 }, (_, i) => "Day " + (i + 1));
+  let data = labels.map(() => (Math.random() * 5 + 3).toFixed(2));
+
+  if (monthlyChart) monthlyChart.destroy();
+
+  monthlyChart = new Chart(document.getElementById("monthlyChart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Energy",
+        data,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 1500, easing: "easeInOutCubic" }
+    }
+  });
+}
+
+/* PREDICTION */
+function updatePredictionChart() {
+  let labels = ["Day 1","Day 2","Day 3","Day 4","Day 5","Day 6","Day 7"];
+  let data = labels.map(() => (Math.random() * 5 + 4).toFixed(2));
+
+  if (predictionChart) predictionChart.destroy();
+
+  predictionChart = new Chart(document.getElementById("predictionChart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Prediction",
+        data,
+        borderDash: [6,6],
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 1500, easing: "easeOutExpo" }
+    }
+  });
+}
+</script>
 
 </body>
-</html>  
+</html>
