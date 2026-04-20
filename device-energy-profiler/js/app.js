@@ -24,7 +24,7 @@ function addDevice() {
 
   usageData.push(entry);
 
-  updateTable();
+ // updateTable();
   updateSummary();
   detectPatterns();
   updateChart();
@@ -35,8 +35,8 @@ function addDevice() {
 }
 function updateTable() {
   const table = document.getElementById('tableBody');
+  if (!table) return; 
   table.innerHTML = "";
-
   usageData.forEach(d => {
     table.innerHTML += `
       <tr>
@@ -52,26 +52,29 @@ function updateTable() {
 function updateSummary() {
   let total = usageData.reduce((sum, d) => sum + d.energy, 0);
 
-  // Update summary text
-  let summaryText = `Total Consumption: ${total.toFixed(2)} kWh\n`;
+  // ✅ Safe update (only if exists)
+  const summaryEl = document.getElementById('summary');
+  if (summaryEl) {
+    let summaryText = `Total Consumption: ${total.toFixed(2)} kWh\n`;
 
-  usageData.forEach(d => {
-    let percent = (d.energy / total) * 100;
-    summaryText += `${d.name}: ${percent.toFixed(1)}%\n`;
-  });
+    usageData.forEach(d => {
+      let percent = (d.energy / total) * 100;
+      summaryText += `${d.name}: ${percent.toFixed(1)}%\n`;
+    });
 
-  document.getElementById('summary').innerText = summaryText;
+    summaryEl.innerText = summaryText;
+  }
 
-  // 🔥 UPDATE DASHBOARD CARDS HERE
+  // ✅ KPI CARDS (these DO exist in new UI)
   document.getElementById("totalEnergy").innerText = total.toFixed(2) + " kWh";
-  document.getElementById("monthlyEnergy").innerText = `Monthly: ${getMonthlyEstimate()} kWh`;
+  document.getElementById("monthlyEnergy").innerText = (total * 30).toFixed(2) + " kWh";
 
-  // Avoid error when no data
   if (usageData.length > 0) {
     document.getElementById("efficiency").innerText = calculateEfficiency() + "%";
 
     let peak = detectPeakHour();
-    document.getElementById("peakHour").innerText = peak !== null ? peak + ":00" : "--";
+    document.getElementById("peakHour") &&
+      (document.getElementById("peakHour").innerText = peak !== null ? peak + ":00" : "--");
   }
 }
 function detectPatterns() {
@@ -266,14 +269,7 @@ function showRecommendations() {
  // text += `\n💸 Potential Savings: ₹${savings.savings}`;
   text += `\n You can save ${savings.percent}% on your electricity bill`;
 
-  
-  generateSolarOptimization().then(solarRecs => {
-  solarRecs.forEach(r => {
-    text += "\n" + r;
-  });
-
   document.getElementById("recommendations").innerText = text;
-});
 }
 function estimateSavings() {
   let total = usageData.reduce((sum, d) => sum + d.energy, 0);
@@ -290,7 +286,7 @@ function estimateSavings() {
     percent: (shiftPercentage * 100).toFixed(1)
   };
 }
-function runSimulation() {
+function runSimulationWithControls() {
   if (usageData.length === 0) {
     document.getElementById("simulationResult").innerText =
       "⚠️ Add some device data first";
@@ -299,32 +295,26 @@ function runSimulation() {
 
   let totalEnergy = usageData.reduce((sum, d) => sum + d.energy, 0);
 
-  let currentCost = totalEnergy * 8;
+  // Get values from sliders
+  let shiftPercentage = document.getElementById("shiftSlider").value / 100;
+  let rate = document.getElementById("rateSlider").value;
 
-  let base = calculateShiftablePercentage();
-
-// Add variation ±10%
-let variation = (Math.random() * 0.2) - 0.1;
-
-let shiftPercentage = base + variation;
-
-// Clamp between 10% and 80%
-shiftPercentage = Math.max(0.1, Math.min(shiftPercentage, 0.8));
+  let currentCost = totalEnergy * rate;
 
   let optimizedEnergy = totalEnergy * shiftPercentage;
-
-  let optimizedCost = (totalEnergy - optimizedEnergy) * 8;
+  let optimizedCost = (totalEnergy - optimizedEnergy) * rate;
 
   let savings = currentCost - optimizedCost;
 
   let percent = (shiftPercentage * 100).toFixed(1);
 
   document.getElementById("simulationResult").innerText =
-    ` If you shift ${(shiftPercentage * 100).toFixed(0)}% usage to daytime:\n` +  // ✅ UPDATED LINE
-    ` Current Cost: ₹${currentCost.toFixed(2)}\n` +
-    ` Optimized Cost: ₹${optimizedCost.toFixed(2)}\n` +
-    ` You Save: ₹${savings.toFixed(2)}\n` +
-    ` You can save ${percent}% on your bill`;
+    `📊 If you shift ${percent}% usage to daytime:\n\n` +
+    `⚡ Total Energy: ${totalEnergy.toFixed(2)} kWh\n` +
+    `💰 Current Cost: ₹${currentCost.toFixed(2)}\n` +
+    `💸 Optimized Cost: ₹${optimizedCost.toFixed(2)}\n` +
+    `✅ Savings: ₹${savings.toFixed(2)}\n\n` +
+    `🚀 You save ${percent}% on your bill`;
 }
 function getMonthlyEstimate() {
   let total = usageData.reduce((sum, d) => sum + d.energy, 0);
@@ -361,48 +351,140 @@ function generateInsights() {
   } else {
     return "✅ Good usage pattern — balanced energy consumption";
   }
-  // 🌞 MEMBER 3 - SOLAR OPTIMIZATION ENGINE
+}
+// Update slider values live
+document.getElementById("shiftSlider").oninput = function () {
+  document.getElementById("shiftValue").innerText = this.value + "%";
+};
 
-async function loadSolarData() {
-  const res = await fetch('../member1 solar/solar_predictions.json');
-  return await res.json();
+document.getElementById("rateSlider").oninput = function () {
+  document.getElementById("rateValue").innerText = this.value;
+};
+// Add message to chat UI
+function addChatMessage(text, sender = "user") {
+  const chatBox = document.getElementById("chatBox");
+
+  const msg = document.createElement("div");
+  msg.className =
+    sender === "user"
+      ? "text-right mb-2"
+      : "text-left mb-2 text-blue-700";
+
+  msg.innerText = text;
+
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function convertTo24Hour(hourStr) {
-  // "11AM" → 11, "1PM" → 13
-  let hour = parseInt(hourStr);
-  if (hourStr.includes("PM") && hour !== 12) hour += 12;
-  if (hourStr.includes("AM") && hour === 12) hour = 0;
-  return hour;
+// Handle user input
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  addChatMessage("🧑 " + text, "user");
+
+  let reply = generateAIResponse(text.toLowerCase());
+
+  setTimeout(() => {
+    addChatMessage("🤖 " + reply, "bot");
+  }, 400);
+
+  input.value = "";
 }
+let lastDevice = null; // remember last mentioned device
 
-async function generateSolarOptimization() {
-  const solarData = await loadSolarData();
-  const today = solarData[0]; // use first day
+function generateAIResponse(query) {
 
-  const peakHoursRaw = today.peak_hours;
-  const peakHours = peakHoursRaw.map(convertTo24Hour);
-
-  let suggestions = [];
-
-  usageData.forEach(d => {
-    if (!d.time) return;
-
-    let hour = parseInt(d.time.split(":")[0]);
-
-    // If device used OUTSIDE solar peak → suggest shift
-    if (!peakHours.includes(hour) && d.energy > 1) {
-      suggestions.push(
-        `🌞 Shift ${d.name} from ${hour}:00 to ${peakHoursRaw.join(", ")} for solar usage`
-      );
-    }
-  });
-
-  // If everything is good
-  if (suggestions.length === 0 && usageData.length > 0) {
-    suggestions.push("✅ Your usage is well aligned with solar energy!");
+  if (usageData.length === 0) {
+    return "⚠️ Add some device data first so I can analyze.";
   }
 
-  return suggestions;
+  let total = usageData.reduce((sum, d) => sum + d.energy, 0);
+  let efficiency = calculateEfficiency();
+  let peak = detectPeakHour();
+
+  let maxDevice = usageData.reduce((a, b) =>
+    a.energy > b.energy ? a : b
+  );
+
+  // 🧠 Detect device mention
+  let foundDevice = usageData.find(d =>
+    query.includes(d.name.toLowerCase())
+  );
+
+  if (foundDevice) {
+    lastDevice = foundDevice;
+  }
+
+  // ============================
+  // 💬 SMART RESPONSES
+  // ============================
+
+  // 🔥 Case 1: AC at night objection
+  if (query.includes("need") && query.includes("night")) {
+    return "🌙 Got it! If you need AC at night, try pre-cooling your room during 1–3 PM. This reduces night energy load and saves cost.";
+  }
+
+  // 💰 Case 2: cost for specific hours
+  if (query.includes("hour") && (query.includes("cost") || query.includes("use"))) {
+
+    let hoursMatch = query.match(/\d+/); // extract number
+    let hours = hoursMatch ? parseInt(hoursMatch[0]) : 1;
+
+    let device = lastDevice || maxDevice;
+
+    let energy = (device.energy / device.hours) * hours;
+    let cost = energy * 8;
+
+    return `💡 If you use ${device.name} for ${hours} hour(s), it will cost approx ₹${cost.toFixed(2)}.`;
+  }
+
+  // ⚡ Case 3: reduce usage
+  if (query.includes("reduce") || query.includes("save")) {
+    return `💡 Focus on reducing ${maxDevice.name} usage and shift it to daytime (10AM–4PM). You can save up to ${estimateSavings().percent}%.`;
+  }
+
+  // 🌱 Case 4: efficiency help
+  if (query.includes("efficiency")) {
+    return `🌱 Your efficiency is ${efficiency}%. Try shifting usage to solar hours (10AM–4PM) to improve it.`;
+  }
+
+  // 💰 Case 5: cost
+  if (query.includes("cost") || query.includes("bill")) {
+    let cost = (total * 8).toFixed(2);
+    return `💰 Your current estimated cost is ₹${cost}. You can reduce it by shifting usage to daytime.`;
+  }
+
+  // 🔌 Case 6: highest device
+  if (query.includes("most") || query.includes("highest")) {
+    return `🔌 ${maxDevice.name} uses the most energy (${maxDevice.energy.toFixed(2)} kWh).`;
+  }
+
+  // ⏰ Case 7: timing
+  if (query.includes("when") || query.includes("time")) {
+    return "⏰ Best time to use heavy appliances is 10AM–4PM (solar peak hours).";
+  }
+
+  // 📊 Case 8: peak hour
+  if (query.includes("peak")) {
+    return `📊 Your peak usage is around ${peak}:00.`;
+  }
+
+  // 🧠 Case 9: general help
+  if (query.includes("help") || query.includes("manage")) {
+    return "🤖 I can help you reduce cost, improve efficiency, and suggest best usage times. Try asking: 'How to save more?' or 'Which device uses most energy?'";
+  }
+  if (query.includes("compare")) {
+  return `📊 ${maxDevice.name} consumes ${maxDevice.energy.toFixed(1)} kWh, which is the highest among your devices.`;
 }
+
+  // fallback
+  return "🤖 Try asking about cost, savings, efficiency, or device usage.";
 }
+document.getElementById("chatInput").addEventListener("keypress", function (e) {
+  if (e.key === "Enter") {
+    sendMessage();
+  }
+});
