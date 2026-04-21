@@ -17,7 +17,7 @@ def load_solar_data():
 # ─────────────────────────────────────────
 
 def load_device_data():
-    path = "../member2_devices/output/devices.json"
+    path = "../member2_device/output/devices.json"
     with open(path, "r") as f:
         data = json.load(f)
     print(f"Device data loaded. {len(data)} devices found.")
@@ -29,9 +29,9 @@ def load_device_data():
 
 def rank_devices(devices):
     print("\nRanking devices by energy consumption...")
-    ranked = sorted(devices, key=lambda x: x["monthly_kwh"], reverse=True)
+    ranked = sorted(devices, key=lambda x: x["power"], reverse=True)
     for i, d in enumerate(ranked):
-        print(f"  {i+1}. {d['device']} — {d['monthly_kwh']} kWh/month")
+        print(f"  {i+1}. {d['name']} — {d['power']} watts")
     return ranked
 
 # ─────────────────────────────────────────
@@ -56,23 +56,23 @@ def match_devices_to_solar(solar_data, ranked_devices):
         }
 
         for device in ranked_devices:
-            if device["monthly_kwh"] >= 50:
+            if device["power"] >= 500:
                 day_schedule["recommended_devices"].append({
-                    "device": device["device"],
+                    "device": device["name"],
                     "use_during": peak_hours,
                     "reason": "High energy — use only during solar peak",
                     "priority": "HIGH"
                 })
-            elif device["monthly_kwh"] >= 20:
+            elif device["power"] >= 100:
                 day_schedule["recommended_devices"].append({
-                    "device": device["device"],
+                    "device": device["name"],
                     "use_during": peak_hours[:2],
                     "reason": "Medium energy — use near peak hours",
                     "priority": "MEDIUM"
                 })
             else:
                 day_schedule["recommended_devices"].append({
-                    "device": device["device"],
+                    "device": device["name"],
                     "use_during": ["Anytime"],
                     "reason": "Low energy — no restriction",
                     "priority": "LOW"
@@ -92,7 +92,7 @@ def estimate_savings(devices, schedule):
 
     rate_per_kwh = 6.5  # ₹ per kWh (India average)
 
-    total_monthly_kwh = sum(d["monthly_kwh"] for d in devices)
+    total_monthly_kwh = sum((d["power"] * 8 * 30) / 1000 for d in devices)
     total_monthly_cost = total_monthly_kwh * rate_per_kwh
 
     high_solar_days = sum(
@@ -135,7 +135,7 @@ def save_output(schedule, savings_summary):
 
     with open("output/savings_summary.json", "w") as f:
         json.dump(savings_summary, f, indent=2)
-    print("Savings saved   → output/savings_summary.json")
+    print("Savings saved  → output/savings_summary.json")
 
     print("\nSample Schedule (Day 1):")
     day = schedule[0]

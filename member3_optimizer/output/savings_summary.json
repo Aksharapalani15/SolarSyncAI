@@ -1,0 +1,10 @@
+{
+  "total_devices": 7,
+  "total_monthly_kwh": 600.0,
+  "original_monthly_bill": 3900.0,
+  "estimated_savings_kwh": 0.0,
+  "estimated_savings_rupees": 0.0,
+  "new_estimated_bill": 3900.0,
+  "high_solar_days": 0,
+  "total_days": 30
+}

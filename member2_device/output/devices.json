@@ -1,0 +1,9 @@
+[
+  { "name": "Air Conditioner", "power": 1500 },
+  { "name": "Fan", "power": 75 },
+  { "name": "Television", "power": 120 },
+  { "name": "Refrigerator", "power": 200 },
+  { "name": "Washing Machine", "power": 500 },
+  { "name": "Laptop", "power": 65 },
+  { "name": "Lights", "power": 40 }
+]

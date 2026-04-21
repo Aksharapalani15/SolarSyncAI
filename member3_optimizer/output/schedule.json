@@ -1,0 +1,520 @@
+[
+  {
+    "date": "2024-01-01",
+    "solar_level": 3.77,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-02",
+    "solar_level": 3.78,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-03",
+    "solar_level": 3.95,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-04",
+    "solar_level": 3.96,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-05",
+    "solar_level": 4.02,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-06",
+    "solar_level": 3.97,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  },
+  {
+    "date": "2024-01-07",
+    "solar_level": 3.76,
+    "peak_hours": [
+      "11AM",
+      "12PM",
+      "1PM"
+    ],
+    "recommended_devices": [
+      {
+        "device": "Air Conditioner",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Washing Machine",
+        "use_during": [
+          "11AM",
+          "12PM",
+          "1PM"
+        ],
+        "reason": "High energy \u2014 use only during solar peak",
+        "priority": "HIGH"
+      },
+      {
+        "device": "Refrigerator",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Television",
+        "use_during": [
+          "11AM",
+          "12PM"
+        ],
+        "reason": "Medium energy \u2014 use near peak hours",
+        "priority": "MEDIUM"
+      },
+      {
+        "device": "Fan",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Laptop",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      },
+      {
+        "device": "Lights",
+        "use_during": [
+          "Anytime"
+        ],
+        "reason": "Low energy \u2014 no restriction",
+        "priority": "LOW"
+      }
+    ],
+    "avoid_devices": []
+  }
+]
