@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<<<<<<< HEAD
     <title>SolarSync AI | Intelligent Energy Manager</title>
     <!-- Chart.js CDN -->
+=======
+    <title>SolarSync AI | Intelligent Energy Optimization</title>
+    <!-- Google Fonts + Chart.js -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+>>>>>>> 2131c61 (Updated folder structure and added new features)
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+<<<<<<< HEAD
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
 
@@ -290,10 +297,200 @@
             max-height: 250px;
             width: 100%;
         }
+=======
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0a0f1c, #03060b);
+            font-family: 'Inter', sans-serif;
+            color: #eef5ff;
+            padding: 24px 20px;
+            transition: all 0.2s;
+        }
+
+        /* glassmorphism core */
+        .glass-card {
+            background: rgba(12, 20, 30, 0.55);
+            backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(0, 255, 170, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            transition: transform 0.2s ease, border-color 0.2s;
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 255, 170, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* layout */
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            gap: 16px;
+        }
+        .logo h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF, #0affb0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo span {
+            font-size: 0.85rem;
+            color: #8aaec0;
+        }
+        .credits-badge {
+            background: rgba(0, 255, 170, 0.15);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid #0affb055;
+        }
+        .credits-badge i {
+            color: #0affb0;
+            margin-right: 8px;
+        }
+
+        /* navigation tabs */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid rgba(10, 255, 170, 0.2);
+            padding-bottom: 12px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #bdd4e8;
+            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .tab-btn.active {
+            background: rgba(0, 255, 170, 0.2);
+            color: #0affb0;
+            box-shadow: 0 0 8px rgba(0,255,170,0.3);
+        }
+        .tab-btn:hover {
+            background: rgba(0, 255, 170, 0.1);
+            color: white;
+        }
+
+        /* grid + cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        .card {
+            padding: 1.4rem 1.6rem;
+        }
+        .card h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #0affb0;
+            padding-left: 12px;
+        }
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0affb0;
+        }
+        .insight-badge {
+            background: #0a2a2a;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            margin: 8px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-primary, .btn-secondary {
+            padding: 10px 18px;
+            border-radius: 32px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: #0affb0;
+            color: #041f1a;
+        }
+        .btn-primary:hover {
+            background: #6effcf;
+            transform: scale(0.98);
+        }
+        .btn-secondary {
+            background: rgba(10, 255, 170, 0.2);
+            color: #0affb0;
+            border: 1px solid #0affb0;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        canvas {
+            max-height: 280px;
+            width: 100%;
+        }
+        @media (max-width: 700px) {
+            body { padding: 16px; }
+            .card { padding: 1rem; }
+        }
+        .alert-item {
+            background: rgba(255,80,40,0.1);
+            border-left: 4px solid #ff5e3a;
+            margin: 12px 0;
+            padding: 10px;
+            border-radius: 14px;
+        }
+        .leaderboard span {
+            font-weight: 700;
+            color: #ffd966;
+        }
+>>>>>>> 2131c61 (Updated folder structure and added new features)
     </style>
 </head>
 <body>
 <div class="app-container">
+<<<<<<< HEAD
     <!-- HORIZONTAL NAVBAR (strict) -->
     <div class="nav-horizontal">
         <button class="nav-btn active" data-section="dashboard">📊 Dashboard</button>
@@ -612,6 +809,313 @@
     updateDashboardMetrics();
     simulationUpdate();
     showSection('dashboard');
+=======
+    <div class="header">
+        <div class="logo">
+            <h1>☀️ SolarSync AI</h1>
+            <span>AI-powered solar optimization & energy trading</span>
+        </div>
+        <div class="credits-badge" id="creditDisplay">
+            <i>⚡</i> Loading credits...
+        </div>
+    </div>
+
+    <div class="nav-tabs" id="navTabs">
+        <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
+        <button class="tab-btn" data-tab="devices">🔌 Devices</button>
+        <button class="tab-btn" data-tab="solar">🌞 Solar Forecast</button>
+        <button class="tab-btn" data-tab="optimization">⚙️ Optimization</button>
+        <button class="tab-btn" data-tab="marketplace">🛒 Marketplace</button>
+        <button class="tab-btn" data-tab="savings">💰 Savings</button>
+        <button class="tab-btn" data-tab="alerts">⚠️ Alerts</button>
+        <button class="tab-btn" data-tab="admin">👑 Admin</button>
+    </div>
+
+    <div id="pageContent"></div>
+</div>
+
+<script>
+    // ---------- GLOBAL DATA CACHE ----------
+    let solarData = null;          // solar_predictions.json
+    let devicesData = null;        // devices.json
+    let savingSummary = null;      // saving_summary.json
+    let scheduleData = null;       // schedule.json
+    let transactionHistory = [];    // marketplace mock + local persistence
+    let energyCredits = 1250;      // points system
+
+    // Helper fetch with error fallback but not changing backend logic
+    async function fetchJSON(url, fallback = null) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return await res.json();
+        } catch (err) {
+            console.warn(`⚠️ Could not fetch ${url}, using fallback`, err);
+            return fallback;
+        }
+    }
+
+    async function loadAllData() {
+        // exact relative paths as per requirement
+        solarData = await fetchJSON('../member1_solar/solar_predictions.json', { predictions: Array(30).fill(0).map((_,i)=> 12+Math.sin(i/5)*5 + Math.random()*3), peak_hours: "11AM - 2PM" });
+        devicesData = await fetchJSON('../member2_device/output/devices.json', { devices: [
+            { name: "HVAC", consumption_kwh: 320, monthly: 320, is_high: true, suggestion: "Shift to noon solar peak" },
+            { name: "EV Charger", consumption_kwh: 210, monthly: 210, is_high: false, suggestion: "Use after 10AM" },
+            { name: "Water Heater", consumption_kwh: 180, monthly: 180, is_high: false, suggestion: "Schedule 1PM-3PM" },
+            { name: "Refrigerator", consumption_kwh: 95, monthly: 95, is_high: false, suggestion: "Already efficient" },
+            { name: "Mining Rig", consumption_kwh: 430, monthly: 430, is_high: true, suggestion: "Use solar window only" }
+        ] });
+        savingSummary = await fetchJSON('../member3_optimizer/output/saving_summary.json', { current_bill: 245.8, optimized_bill: 178.3, savings_percent: 27.5, monthly_comparison: [210,225,245,230,218,178] });
+        scheduleData = await fetchJSON('../member3_optimizer/output/schedule.json', { schedule: [
+            { device: "HVAC", recommended_start: "10:30", end: "14:00", shiftable: true },
+            { device: "EV Charger", recommended_start: "12:00", end: "13:30", shiftable: true },
+            { device: "Water Heater", recommended_start: "13:00", end: "14:30", shiftable: true },
+            { device: "Refrigerator", recommended_start: "Always", end: "24/7", shiftable: false }
+        ] });
+        // load stored credits/transactions from localStorage (marketplace simulation)
+        const storedCredits = localStorage.getItem('solar_credits');
+        if(storedCredits) energyCredits = parseInt(storedCredits);
+        const storedTx = localStorage.getItem('solar_tx');
+        if(storedTx) transactionHistory = JSON.parse(storedTx);
+        else transactionHistory = [{ id: 1, type: 'earned', amount: 500, description: 'Initial signup bonus', date: '2025-04-01' }];
+        updateCreditUI();
+    }
+
+    function updateCreditUI() {
+        const creditSpan = document.getElementById('creditDisplay');
+        if(creditSpan) creditSpan.innerHTML = `<i>⚡</i> ${energyCredits} Energy Credits`;
+        localStorage.setItem('solar_credits', energyCredits);
+    }
+
+    function addTransaction(type, amount, description) {
+        const tx = { id: Date.now(), type, amount, description, date: new Date().toISOString().slice(0,10) };
+        transactionHistory.unshift(tx);
+        if(type === 'sell') energyCredits += amount;
+        if(type === 'buy') energyCredits -= amount;
+        localStorage.setItem('solar_tx', JSON.stringify(transactionHistory));
+        updateCreditUI();
+        renderCurrentPage(); // refresh marketplace if needed
+    }
+
+    // ---------- CHARTS (global to avoid duplication) ----------
+    let solarLineChart, deviceBarChart, savingsCompareChart;
+
+    // DASHBOARD specific charts
+    function renderDashboard() {
+        if(!solarData || !devicesData || !savingSummary) return `<div>Loading dashboard...</div>`;
+        const solarGen = solarData.predictions || Array(30).fill(14);
+        const totalEnergyUsed = devicesData.devices.reduce((sum,d)=> sum + (d.consumption_kwh || d.monthly || 0),0);
+        const peakUsage = "2:00 PM - 4:00 PM";
+        const savingsAmount = (savingSummary.current_bill - savingSummary.optimized_bill).toFixed(2);
+        const alertMessages = [
+            "⚠️ Solar generation mismatch: Overcast expected tomorrow",
+            "💡 HVAC usage 23% above optimal threshold",
+            "🔋 Battery storage at 87% - consider selling surplus"
+        ];
+        const deviceUsageForBar = devicesData.devices.map(d => ({ name: d.name, usage: d.consumption_kwh || d.monthly || 0 }));
+        setTimeout(() => {
+            const ctxLine = document.getElementById('solarLineChart')?.getContext('2d');
+            if(ctxLine && solarLineChart) solarLineChart.destroy();
+            if(ctxLine) {
+                solarLineChart = new Chart(ctxLine, { type: 'line', data: { labels: Array(30).fill(0).map((_,i)=> i+1), datasets: [{ label: 'kWh Generated', data: solarGen, borderColor: '#0affb0', backgroundColor: 'rgba(10,255,176,0.05)', tension: 0.3, fill: true }] }, options: { responsive: true, maintainAspectRatio: true } });
+            }
+            const barCtx = document.getElementById('deviceBarChart')?.getContext('2d');
+            if(barCtx && deviceBarChart) deviceBarChart.destroy();
+            if(barCtx) {
+                deviceBarChart = new Chart(barCtx, { type: 'bar', data: { labels: deviceUsageForBar.map(d=> d.name), datasets: [{ label: 'Monthly kWh', data: deviceUsageForBar.map(d=> d.usage), backgroundColor: '#0affb060', borderRadius: 8 }] }, options: { responsive: true } });
+            }
+        }, 50);
+        return `
+            <div class="dashboard-grid">
+                <div class="glass-card card"><h3>⚡ Total Energy Usage</h3><div class="stat-value">${totalEnergyUsed} kWh</div><div>Last 30 days</div></div>
+                <div class="glass-card card"><h3>💰 Savings Summary</h3><div class="stat-value">$${savingsAmount}</div><div>vs original bill | ${savingSummary.savings_percent}% lower</div></div>
+                <div class="glass-card card"><h3>⏱️ Peak Usage Time</h3><div class="stat-value">${peakUsage}</div><div>Shift loads to solar noon</div></div>
+                <div class="glass-card card full-width"><h3>☀️ Solar Generation (30 days)</h3><canvas id="solarLineChart" height="180"></canvas></div>
+                <div class="glass-card card"><h3>📊 Device Usage</h3><canvas id="deviceBarChart" height="200"></canvas></div>
+                <div class="glass-card card"><h3>🔔 Alerts & Insights</h3>${alertMessages.map(msg=>`<div class="insight-badge">${msg}</div>`).join('')}</div>
+            </div>
+        `;
+    }
+
+    // Device Energy Page
+    function renderDevices() {
+        if(!devicesData) return `<div class="glass-card card">Loading devices...</div>`;
+        const devices = devicesData.devices;
+        return `
+            <div class="glass-card card">
+                <h3>🔌 All Devices & Monthly Consumption</h3>
+                <table>
+                    <thead><tr><th>Device</th><th>kWh (month)</th><th>Status</th><th>Optimization Suggestion</th></tr></thead>
+                    <tbody>
+                        ${devices.map(d => `
+                            <tr>
+                                <td><strong>${d.name}</strong></td>
+                                <td>${d.consumption_kwh || d.monthly || 0} kWh</td>
+                                <td>${d.is_high ? '<span style="color:#ff7b5c;">⚠️ High usage</span>' : '✅ Normal'}</td>
+                                <td style="color:#aaffdd;">${d.suggestion || 'Shift to solar hours'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="insight-badge" style="margin-top:16px;">💡 Tip: High usage devices can be scheduled during peak solar generation to reduce grid draw.</div>
+            </div>
+        `;
+    }
+
+    // Solar Forecast
+    function renderSolar() {
+        if(!solarData) return `<div>Forecast unavailable</div>`;
+        const predictions = solarData.predictions || [];
+        const peakHours = solarData.peak_hours || "10:30 AM - 2:30 PM";
+        setTimeout(() => {
+            const ctx = document.getElementById('solarForecastChart')?.getContext('2d');
+            if(ctx && window.solarForecastChart) window.solarForecastChart.destroy();
+            if(ctx) {
+                window.solarForecastChart = new Chart(ctx, { type: 'line', data: { labels: Array(30).fill().map((_,i)=>`Day ${i+1}`), datasets: [{ label: 'Forecast kWh', data: predictions, borderColor: '#0affb0', backgroundColor: 'transparent' }] } });
+            }
+        }, 20);
+        return `
+            <div class="dashboard-grid">
+                <div class="glass-card card full-width"><h3>📈 30-Day Solar Prediction</h3><canvas id="solarForecastChart" height="220"></canvas></div>
+                <div class="glass-card card"><h3>☀️ Peak Solar Hours</h3><div class="stat-value">${peakHours}</div><div>Best for high-consumption devices</div></div>
+                <div class="glass-card card"><h3>🖼️ Solar Irradiance Map</h3><img src="../member1_solar/solar_graph.png" alt="Solar Graph" style="width:100%; border-radius: 24px; border: 1px solid #0affb055;" onerror="this.src='https://placehold.co/600x300/0a2a2a/0affb0?text=Solar+Graph+Preview'"></div>
+            </div>
+        `;
+    }
+
+    // Optimization Page
+    function renderOptimization() {
+        if(!scheduleData) return `<div>Schedule not available</div>`;
+        const schedules = scheduleData.schedule;
+        return `
+            <div class="glass-card card">
+                <h3>⚙️ Optimal Device Schedule</h3>
+                <table>
+                    <thead><tr><th>Device</th><th>Recommended Time</th><th>Shiftable</th><th>Action</th></tr></thead>
+                    <tbody>
+                        ${schedules.map(s => `
+                            <tr>
+                                <td>${s.device}</td>
+                                <td>${s.recommended_start} - ${s.end}</td>
+                                <td>${s.shiftable ? '✅ Shiftable' : '🔒 Fixed'}</td>
+                                <td>${s.shiftable ? '<span style="color:#0affb0;">Optimize now</span>' : 'Always on'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                <div class="insight-badge">💡 Shiftable devices can reduce cost by 18-25% if scheduled during solar surplus.</div>
+            </div>
+        `;
+    }
+
+    // Energy Marketplace
+    function renderMarketplace() {
+        const surplusEnergy = Math.floor(Math.random() * 40) + 20; // dynamic surplus
+        return `
+            <div class="dashboard-grid">
+                <div class="glass-card card"><h3>🔋 Surplus Energy Available</h3><div class="stat-value">${surplusEnergy} kWh</div><div>Ready to trade now</div><div style="margin-top:16px; display:flex; gap:12px;"><button class="btn-primary" id="sellEnergyBtn">💰 Sell Energy</button><button class="btn-primary" id="buyEnergyBtn" style="background:#2c6e5e;">🛒 Buy Energy</button></div></div>
+                <div class="glass-card card"><h3>⭐ Energy Credits</h3><div class="stat-value">${energyCredits} pts</div><div>1 credit = 0.5 kWh trade value</div></div>
+                <div class="glass-card card full-width"><h3>📜 Transaction History</h3><table><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead><tbody>${transactionHistory.slice(0,6).map(tx=>`<tr><td>${tx.date}</td><td>${tx.type === 'sell' ? '💸 Sell' : tx.type === 'buy' ? '🛒 Buy' : '🎁 Earn'}</td><td>${tx.amount} credits</td><td>${tx.description}</td></tr>`).join('')}</tbody></table></div>
+            </div>
+        `;
+    }
+
+    // Savings Page
+    function renderSavings() {
+        if(!savingSummary) return `<div>Loading savings data...</div>`;
+        setTimeout(() => {
+            const ctx = document.getElementById('savingsCompareChart')?.getContext('2d');
+            if(ctx && savingsCompareChart) savingsCompareChart.destroy();
+            if(ctx) {
+                const monthly = savingSummary.monthly_comparison || [210,225,245,230,218,178];
+                const labels = ['Jan','Feb','Mar','Apr','May','Jun'];
+                savingsCompareChart = new Chart(ctx, { type: 'line', data: { labels, datasets: [{ label: 'Actual Bill ($)', data: monthly, borderColor: '#ffaa66' },{ label: 'Optimized Target', data: monthly.map(m=> m*0.73), borderColor: '#0affb0', borderDash: [5] }] } });
+            }
+        }, 50);
+        return `
+            <div class="dashboard-grid">
+                <div class="glass-card card"><h3>💰 Current Bill</h3><div class="stat-value">$${savingSummary.current_bill}</div></div>
+                <div class="glass-card card"><h3>✨ Optimized Bill</h3><div class="stat-value">$${savingSummary.optimized_bill}</div><div>Savings: ${savingSummary.savings_percent}%</div></div>
+                <div class="glass-card card full-width"><h3>📉 Monthly Comparison (Actual vs AI Optimized)</h3><canvas id="savingsCompareChart" height="200"></canvas></div>
+            </div>
+        `;
+    }
+
+    // Alerts Page
+    function renderAlerts() {
+        const alerts = [
+            { type: "⚠️ High Energy Usage", msg: "HVAC consumed 23% above expected yesterday", severity: "high" },
+            { type: "🌞 Solar Mismatch", msg: "Forecast vs actual: 12% deviation, grid import increased", severity: "medium" },
+            { type: "🔧 Maintenance Alert", msg: "Inverter #3 efficiency drop, schedule checkup", severity: "low" },
+            { type: "⚡ Peak Demand", msg: "Grid peak tariff active, use battery storage", severity: "high" }
+        ];
+        return `<div class="glass-card card"><h3>🔔 System Alerts</h3>${alerts.map(a=>`<div class="alert-item"><strong>${a.type}</strong><br>${a.msg}</div>`).join('')}</div>`;
+    }
+
+    // Admin Dashboard
+    function renderAdmin() {
+        const users = [
+            { name: "Sunrise Apartments", usage: 4850, efficiency: "Moderate", leaderboardPoints: 320 },
+            { name: "GreenTech Industries", usage: 12400, efficiency: "Inefficient", leaderboardPoints: 180 },
+            { name: "EcoVille Housing", usage: 2780, efficiency: "Efficient", leaderboardPoints: 890 },
+            { name: "SolarPark Mall", usage: 9230, efficiency: "Needs optimization", leaderboardPoints: 445 }
+        ];
+        const sorted = [...users].sort((a,b)=> b.leaderboardPoints - a.leaderboardPoints);
+        return `
+            <div class="dashboard-grid">
+                <div class="glass-card card full-width"><h3>👥 Users Energy Benchmark</h3><table><thead><tr><th>User</th><th>Monthly kWh</th><th>Efficiency Status</th></tr></thead><tbody>${users.map(u=>`<tr><td>${u.name}</td><td>${u.usage} kWh</td><td style="color:${u.efficiency==='Efficient'?'#0affb0':'#ffaa66'}">${u.efficiency}</td></tr>`).join('')}</tbody></table></div>
+                <div class="glass-card card"><h3>🏆 Leaderboard (Credits)</h3>${sorted.map((u,i)=>`<div class="leaderboard" style="padding:6px 0;">${i+1}. ${u.name} <span>${u.leaderboardPoints} pts</span></div>`).join('')}</div>
+                <div class="glass-card card"><h3>⚠️ Inefficient Users</h3>${users.filter(u=> u.efficiency.includes('Inefficient') || u.usage>9000).map(u=>`<div>🔴 ${u.name} - High waste potential</div>`).join('') || '✅ All good'}</div>
+            </div>
+        `;
+    }
+
+    let currentTab = 'dashboard';
+    function renderCurrentPage() {
+        const container = document.getElementById('pageContent');
+        if(!container) return;
+        switch(currentTab) {
+            case 'dashboard': container.innerHTML = renderDashboard(); break;
+            case 'devices': container.innerHTML = renderDevices(); break;
+            case 'solar': container.innerHTML = renderSolar(); break;
+            case 'optimization': container.innerHTML = renderOptimization(); break;
+            case 'marketplace': container.innerHTML = renderMarketplace(); break;
+            case 'savings': container.innerHTML = renderSavings(); break;
+            case 'alerts': container.innerHTML = renderAlerts(); break;
+            case 'admin': container.innerHTML = renderAdmin(); break;
+            default: container.innerHTML = renderDashboard();
+        }
+        // attach marketplace handlers after render
+        if(currentTab === 'marketplace') {
+            setTimeout(() => {
+                const sellBtn = document.getElementById('sellEnergyBtn');
+                const buyBtn = document.getElementById('buyEnergyBtn');
+                if(sellBtn) sellBtn.onclick = () => { addTransaction('sell', 85, 'Sold 42 kWh surplus'); renderCurrentPage(); };
+                if(buyBtn) buyBtn.onclick = () => { if(energyCredits>=60) addTransaction('buy', 60, 'Purchased 30 kWh green energy'); else alert('Insufficient credits'); renderCurrentPage(); };
+            }, 10);
+        }
+        // trigger chart re-draws after render
+        setTimeout(()=>{ if(currentTab==='dashboard') renderDashboard(); if(currentTab==='solar') renderSolar(); if(currentTab==='savings') renderSavings(); }, 60);
+    }
+
+    function initEventListeners() {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentTab = btn.getAttribute('data-tab');
+                renderCurrentPage();
+            });
+        });
+    }
+
+    async function init() {
+        await loadAllData();
+        initEventListeners();
+        renderCurrentPage();
+    }
+    init();
+>>>>>>> 2131c61 (Updated folder structure and added new features)
 </script>
 </body>
 </html>
