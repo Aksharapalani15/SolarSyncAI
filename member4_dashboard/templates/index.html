@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar Sync AI Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <span class="sun-icon">☀️</span>
+      <div>
+        <h1>Solar Sync AI</h1>
+        <p>Smart Energy Optimization Dashboard</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="status-dot"></span>
+      <span>Live</span>
+    </div>
+  </div>
+
+  <!-- SAVINGS CARDS -->
+  <div class="cards-row">
+    <div class="card green">
+      <div class="card-icon">💰</div>
+      <div class="card-value" id="savings-amount">Loading...</div>
+      <div class="card-label">Monthly Savings (₹)</div>
+    </div>
+    <div class="card blue">
+      <div class="card-icon">⚡</div>
+      <div class="card-value" id="total-kwh">Loading...</div>
+      <div class="card-label">Total kWh / Month</div>
+    </div>
+    <div class="card orange">
+      <div class="card-icon">☀️</div>
+      <div class="card-value" id="solar-days">Loading...</div>
+      <div class="card-label">High Solar Days</div>
+    </div>
+    <div class="card red">
+      <div class="card-icon">🏠</div>
+      <div class="card-value" id="new-bill">Loading...</div>
+      <div class="card-label">New Est. Bill (₹)</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="charts-row">
+
+    <!-- Solar Prediction Chart -->
+    <div class="chart-box">
+      <h2>☀️ Solar Energy Prediction (Next 30 Days)</h2>
+      <canvas id="solarChart"></canvas>
+    </div>
+
+    <!-- Device Usage Chart -->
+    <div class="chart-box">
+      <h2>⚡ Device Energy Usage (kWh/month)</h2>
+      <canvas id="deviceChart"></canvas>
+    </div>
+
+  </div>
+
+  <!-- SCHEDULE TABLE -->
+  <div class="section">
+    <h2>📅 Optimal Device Schedule</h2>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Solar Level</th>
+          <th>Peak Hours</th>
+          <th>Top Device</th>
+          <th>Recommended Time</th>
+          <th>Priority</th>
+        </tr>
+      </thead>
+      <tbody id="schedule-body">
+        <tr><td colspan="6">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BILL TRACKER -->
+  <div class="section">
+    <h2>💸 Monthly Bill Tracker</h2>
+    <div class="bill-form">
+      <input type="text" id="bill-month"
+             placeholder="Month (e.g. January 2024)" />
+      <input type="number" id="bill-amount"
+             placeholder="Bill Amount (₹)" />
+      <button onclick="addBill()">Add Bill</button>
+    </div>
+    <canvas id="billChart" style="margin-top:20px;"></canvas>
+    <div id="bill-tip" class="bill-tip"></div>
+  </div>
+
+  <script src="/static/charts.js"></script>
+
+</body>
+</html>
